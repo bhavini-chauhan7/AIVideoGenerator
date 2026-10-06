@@ -61,39 +61,31 @@ def duration(path):
 # Story
 # --------------------------------------------------------------------------
 
-DEMO_PLAN = {
-    "title": "Daddy's Cookie Crime",
-    "idea": "baby catches daddy eating her cookies",
-    "hook_caption": "\"I tell Mommy on you!\" 😂🍪❤️",
-    "description": "She caught me red-handed... and negotiated like a pro. Daddy's cookie crime is safe, for now.",
-    "hashtags": ["pixar", "dadlife", "toddlersbelike", "cutebaby", "fatherdaughter", "funnybaby"],
-    "scenes": [
-        {
-            "characters": ["daddy", "lily"],
-            "image_prompt": "Cozy kitchen at night under a warm lamp. The dad is frozen mid-bite with a cookie in his mouth and his hand inside a pink cookie jar, eyes wide and guilty. In the doorway the little girl stands holding a teddy bear, pointing at him with a shocked face. Medium-wide shot.",
-            "action": "slow push in on the dad's guilty face",
-            "dialogue": [{"speaker": "lily", "line": "Daddyyy! Dat MY cookie!"}],
-        },
-        {
-            "characters": ["daddy", "lily"],
-            "image_prompt": "Cozy kitchen at night. The dad crouches down to the little girl's height with cookie crumbs on his chin, holding a finger to his lips with an awkward smile. The little girl has her arms crossed and squints at him suspiciously, chin up. Close two-shot.",
-            "action": "gentle drift between their faces",
-            "dialogue": [
-                {"speaker": "daddy", "line": "Shhh... our little secret?"},
-                {"speaker": "lily", "line": "Hmph! I tell Mommy on you!"},
-            ],
-        },
-        {
-            "characters": ["daddy", "lily"],
-            "image_prompt": "Cozy kitchen at night with golden bokeh. The little girl happily hugs the dad's neck while holding a half-eaten cookie, giggling with eyes closed. The dad melts with a huge happy smile. Close-up, heartwarming.",
-            "action": "slow zoom out",
-            "dialogue": [
-                {"speaker": "lily", "line": "Otay... secret, Daddy. Hee hee!"},
-                {"speaker": "daddy", "line": "Best partner in crime ever."},
-            ],
-        },
-    ],
-}
+STORIES = yaml.safe_load((ROOT / "stories.yaml").read_text())
+
+
+def copy(obj):
+    return json.loads(json.dumps(obj))
+
+
+def made_titles(out_dir):
+    titles = set()
+    for f in Path(out_dir).glob("*/plan.json"):
+        try:
+            titles.add(json.loads(f.read_text()).get("title"))
+        except Exception:
+            pass
+    return titles
+
+
+def pick_story(idea, out_dir):
+    """A ready-made story: the one matching the idea, or the next one not made yet."""
+    if idea:
+        key = idea.lower().strip(" .!")
+        return next((copy(st) for st in STORIES if st["idea"].lower() == key), None)
+    done = made_titles(out_dir)
+    fresh = [st for st in STORIES if st["title"] not in done]
+    return copy(random.choice(fresh) if fresh else random.choice(STORIES))
 
 
 def story_prompt(cast, idea, n_scenes, language):
@@ -119,26 +111,7 @@ Reply with ONLY a JSON object, no markdown, in exactly this shape:
 def parse_json(text):
     text = text.strip()
     m = re.search(r"\{.*\}", text, re.S)
-    return json.loads(m.group(0) if m else text)
-
-
-IDEAS = [
-    "baby catches daddy eating her cookies",
-    "Lily puts makeup on daddy while he naps",
-    "daddy pretends Lily's tiny roar is the scariest thing ever",
-    "mommy asks who made the mess and Lily points at daddy",
-    "Lily tries to say 'I love you' but mispronounces it",
-    "daddy tries to braid Lily's hair for the first time",
-    "Lily refuses to share her ice cream with daddy",
-    "Lily teaches daddy how to dance",
-    "daddy pretends to cry so Lily will give him a hug",
-    "Lily hides daddy's phone and acts innocent",
-    "Lily wants daddy to wear her pink bow",
-    "daddy and Lily have a tickle fight",
-    "Lily insists her teddy bear is hungry at the restaurant",
-    "Lily tells mommy that daddy said a bad word",
-    "Lily wakes daddy up at 5am to play",
-]
+    return json.loads(m.group(0) if m else text, strict=False)
 
 
 def llm_local(prompt, model_id):
@@ -149,7 +122,7 @@ def llm_local(prompt, model_id):
     torch.set_num_threads(os.cpu_count() or 4)
     tok = AutoTokenizer.from_pretrained(model_id)
     model = AutoModelForCausalLM.from_pretrained(model_id, torch_dtype=torch.float32)
-    example = json.dumps(DEMO_PLAN, ensure_ascii=False)
+    example = json.dumps(STORIES[0], ensure_ascii=False)
     msgs = [
         {"role": "system", "content": "You are a funny, warm screenwriter. You answer with valid JSON only."},
         {"role": "user", "content": prompt + "\n\nExample of the exact JSON format (write a NEW story, "
@@ -180,35 +153,37 @@ def validate_plan(plan, cast, n_scenes):
     return plan
 
 
-def write_plan(cfg, cast, idea, n_scenes):
-    if not idea and os.environ.get("USE_DEMO", "") == "1":
-        return json.loads(json.dumps(DEMO_PLAN))
+def write_plan(cfg, cast, idea, n_scenes, out_dir):
+    story = pick_story(idea, out_dir)
+    if story:
+        log(f"Using ready-made story: {story['title']}")
+        return validate_plan(story, cast, len(story["scenes"]))
     language = cfg.get("language", "English")
 
     if os.environ.get("ANTHROPIC_API_KEY"):
         try:
             import agent  # the paid agent's Claude writer
             log("Writing the story with Claude...")
-            plan = agent.write_plan(cfg, cast, idea or agent.brainstorm(cfg, cast, 1)[0], n_scenes)
-            return validate_plan(plan, cast, n_scenes)
-        except Exception as e:  # fall through to the free writers
-            log(f"Claude unavailable ({e}); using a free writer")
+            return validate_plan(agent.write_plan(cfg, cast, idea, n_scenes), cast, n_scenes)
+        except Exception as e:  # fall through to the free writer
+            log(f"Claude unavailable ({e}); using the free writer")
 
-    if not idea:
-        idea = random.choice(IDEAS)
-        log(f"No idea given, the agent picked: {idea}")
     prompt = story_prompt(cast, idea, n_scenes, language)
-    model_id = cfg.get("free_story_model", "Qwen/Qwen2.5-1.5B-Instruct")
+    model_id = cfg.get("free_story_model", "Qwen/Qwen2.5-3B-Instruct")
+    best = None
     for attempt in range(3):
         try:
             log(f"Writing the story with a free AI on this computer ({model_id})...")
             plan = validate_plan(parse_json(llm_local(prompt, model_id)), cast, n_scenes)
             plan["idea"] = idea
-            return plan
+            if len(plan["scenes"]) == n_scenes:
+                return plan
+            log(f"  got {len(plan['scenes'])} scenes instead of {n_scenes}, trying again")
+            best = best or plan
         except Exception as e:
             log(f"  attempt {attempt + 1} failed: {e}")
-    if idea == DEMO_PLAN["idea"]:
-        return json.loads(json.dumps(DEMO_PLAN))
+    if best:
+        return best
     sys.exit("[free-agent] The free story writer could not write a story. Please try again.")
 
 
@@ -235,7 +210,8 @@ def image_pollinations(prompt, seed, dest):
 def image_huggingface(prompt, seed, dest):
     from gradio_client import Client
 
-    client = Client("black-forest-labs/FLUX.1-schnell", hf_token=os.environ.get("HF_TOKEN") or None)
+    token = os.environ.get("HF_TOKEN")
+    client = Client("black-forest-labs/FLUX.1-schnell", **({"token": token} if token else {}))
     result = client.predict(prompt=prompt[:1800], seed=seed, randomize_seed=False, width=768,
                             height=1344, num_inference_steps=4, api_name="/infer")
     path = result[0] if isinstance(result, (list, tuple)) else result
@@ -371,7 +347,7 @@ def main():
     p.add_argument("idea", nargs="*")
     p.add_argument("-n", "--scenes", type=int, default=None)
     p.add_argument("--out", default="output", help="folder to put videos in")
-    p.add_argument("--demo", action="store_true", help="use the built-in demo story")
+    p.add_argument("--demo", action="store_true", help="make the first ready-made story")
     args = p.parse_args()
 
     cfg = yaml.safe_load((ROOT / "config.yaml").read_text())
@@ -379,12 +355,11 @@ def main():
     n_scenes = args.scenes or cfg.get("scenes_per_video", 3)
     idea = " ".join(args.idea).strip()
     if args.demo:
-        os.environ["USE_DEMO"] = "1"
-        idea = ""
+        idea = STORIES[0]["idea"]
     if not shutil.which("ffmpeg"):
         sys.exit("[free-agent] ffmpeg is not installed.")
 
-    plan = write_plan(cfg, cast, idea, n_scenes)
+    plan = write_plan(cfg, cast, idea, n_scenes, args.out)
     stamp = dt.datetime.now().strftime("%Y%m%d-%H%M%S")
     folder = Path(args.out) / f"{stamp}-{slugify(plan['title'])}"
     work = folder / "work"

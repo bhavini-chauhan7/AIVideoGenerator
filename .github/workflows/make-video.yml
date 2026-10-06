@@ -41,7 +41,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/huggingface
-          key: hf-qwen2.5-1.5b-instruct
+          key: hf-qwen2.5-3b-instruct
 
       - name: Make the video
         id: make
