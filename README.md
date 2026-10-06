@@ -12,9 +12,13 @@ plus a caption ready to paste into Reels, Shorts or TikTok.
 4. Wait about 5 minutes. Your video appears in the **`videos/`** folder. Tap the newest folder, then `final.mp4`.
    The caption to paste is in `caption.txt` in the same folder.
 
-The free version makes "talking storybook" videos: Pixar-style pictures with slow camera moves, character
-voices (including a little girl's voice) and big coloured subtitles. Characters don't move their lips.
-For real animation with lip-sync, use the paid version below.
+The free version draws Pixar-style pictures, **animates** them (the characters run, eat, hug and fall over)
+with free Hugging Face AI, and adds character voices (including a little girl's voice) and big coloured
+subtitles. Each scene runs on its own free GitHub computer so it gets its own free animation allowance.
+If that allowance runs out, the scene uses a slow camera move instead.
+The characters don't move their lips; for lip-sync, use the paid version below.
+Free AI is sometimes weird (a character drawn twice, or sliding out of the picture). If a scene looks odd,
+just run it again.
 
 Note: this repo is public, so the videos in `videos/` can be seen by anyone with the link.
 
