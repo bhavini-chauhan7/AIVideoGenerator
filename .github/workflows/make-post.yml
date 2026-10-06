@@ -20,9 +20,12 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  post:
+  # 1) Write the post (ready-made, or by Claude / a free AI running on this computer)
+  plan:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 30
+    outputs:
+      chunks: ${{ steps.plan.outputs.chunks }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -32,9 +35,7 @@ jobs:
         env:
           THEME: ${{ inputs.theme }}
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq ffmpeg
-          pip install -q requests PyYAML Pillow gradio_client anthropic
+          pip install -q requests PyYAML Pillow anthropic
           if [ -n "$THEME" ]; then
             pip install -q torch --index-url https://download.pytorch.org/whl/cpu
             pip install -q transformers
@@ -45,14 +46,74 @@ jobs:
         with:
           path: ~/.cache/huggingface
           key: hf-qwen2.5-3b-instruct
-      - name: Write, draw and lay out the post
-        id: make
+      - name: Write the post
+        id: plan
         env:
           THEME: ${{ inputs.theme }}
           SLIDES: ${{ inputs.slides }}
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: python post_agent.py --slides "${SLIDES:-8}" --out posts -- "$THEME"
+        run: python post_agent.py --plan-only work/post.json --slides "${SLIDES:-8}" --out posts -- "$THEME"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: post-plan
+          path: work/post.json
+
+  # 2) A few pictures per computer, so each gets its own free picture allowance
+  pictures:
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        chunk: ${{ fromJSON(needs.plan.outputs.chunks) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install tools
+        run: pip install -q requests PyYAML Pillow gradio_client
+      - uses: actions/download-artifact@v4
+        with:
+          name: post-plan
+          path: work
+      - name: Draw pictures (group ${{ matrix.chunk }})
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: python post_agent.py --chunk ${{ matrix.chunk }} --plan work/post.json --work work/pictures
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pictures-${{ matrix.chunk }}
+          path: work/pictures/*.png
+
+  # 3) Lay out the slides, make the reel and save everything
+  finish:
+    needs: pictures
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+          pip install -q requests PyYAML Pillow
+      - uses: actions/download-artifact@v4
+        with:
+          name: post-plan
+          path: work
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: pictures-*
+          merge-multiple: true
+          path: work/pictures
+      - name: Lay out the slides
+        id: make
+        run: python post_agent.py --finish --plan work/post.json --work work/pictures --out posts
       - uses: actions/upload-artifact@v4
         with:
           name: post

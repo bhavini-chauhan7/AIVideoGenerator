@@ -343,6 +343,78 @@ def make_reel(slides, dest, seconds, music_volume):
 
 # --------------------------------------------------------------------------
 
+PICS_PER_COMPUTER = 3  # free Hugging Face allowance is ~3 pictures per computer
+
+
+def pages(post):
+    """Every slide as (kind, scene, text): the cover first, then the quotes."""
+    cover = [("cover", post["cover"]["scene"], post["cover"]["text"])] if post.get("cover") else []
+    return cover + [("quote", s["scene"], s["quote"]) for s in post["slides"]]
+
+
+def new_post(cfg, theme, n_slides, out_dir, layout_test=False):
+    post = validate(json.loads(json.dumps(POSTS[0])), 99) if layout_test else \
+        write_post(cfg, theme, n_slides, out_dir)
+    post["seed"] = random.randint(1, 10**6)
+    post["theme"] = theme
+    log(f"Title: {post['title']} ({len(pages(post))} slides)")
+    return post
+
+
+def draw_pictures(post, work, chunk=None, layout_test=False):
+    work.mkdir(parents=True, exist_ok=True)
+    all_pages = list(enumerate(pages(post), 1))
+    if chunk is not None:
+        all_pages = all_pages[chunk * PICS_PER_COMPUTER:(chunk + 1) * PICS_PER_COMPUTER]
+    for i, (_, scene, text) in all_pages:
+        log(f"Picture {i}: {scene}")
+        pic = work / f"picture_{i:02d}.png"
+        if layout_test:
+            blank_picture(scene, pic)
+        else:
+            draw_picture(scene, post["seed"] + i, pic)
+            time.sleep(2)  # be polite to the free services
+
+
+def finish(cfg, post, work, out_dir, reel=True):
+    handle = cfg.get("post_handle", "") or ""
+    all_pages = pages(post)
+    missing = [f"picture_{i:02d}.png" for i in range(1, len(all_pages) + 1)
+               if not (work / f"picture_{i:02d}.png").exists()]
+    if missing:
+        sys.exit(f"[post-agent] Missing pictures: {', '.join(missing)}")
+    stamp = dt.datetime.now().strftime("%Y%m%d-%H%M%S")
+    folder = Path(out_dir) / f"{stamp}-{slugify(post['title'])}"
+    (folder / "pictures").mkdir(parents=True)
+    slides = []
+    for i, (kind, _, text) in enumerate(all_pages, 1):
+        pic = folder / "pictures" / f"picture_{i:02d}.png"
+        shutil.copy(work / pic.name, pic)
+        dest = folder / f"slide_{i:02d}.png"
+        (make_cover if kind == "cover" else make_slide)(pic, text, dest, handle)
+        slides.append(dest)
+    if reel:
+        log("Making the reel version...")
+        make_reel(slides, folder / "reel.mp4", cfg.get("post_seconds_per_slide", 3.0),
+                  cfg.get("music_volume", 0.12))
+    (folder / "post.json").write_text(json.dumps(post, indent=2, ensure_ascii=False))
+    caption = (f"{post['caption']}\n\n"
+               + "\n".join(f"{i}. {s['quote']}" for i, s in enumerate(post["slides"], 1)) + "\n\n"
+               + " ".join(h if h.startswith("#") else f"#{h}" for h in post["hashtags"]))
+    (folder / "caption.txt").write_text(caption)
+    log(f"DONE -> {folder}  ({len(slides)} slides)")
+    gh_output(folder=str(folder))
+    return folder
+
+
+def gh_output(**kv):
+    path = os.environ.get("GITHUB_OUTPUT")
+    if path:
+        with open(path, "a") as f:
+            for k, v in kv.items():
+                f.write(f"{k}={v}\n")
+
+
 def main():
     p = argparse.ArgumentParser(description="FREE motivational carousel agent")
     p.add_argument("theme", nargs="*")
@@ -350,52 +422,39 @@ def main():
     p.add_argument("--out", default="output", help="folder to put posts in")
     p.add_argument("--layout-test", action="store_true", help="grey pictures, no internet needed")
     p.add_argument("--no-reel", action="store_true", help="don't make the slideshow video")
+    # Split mode (used by GitHub Actions so every few pictures run on their own
+    # computer and get their own free Hugging Face allowance):
+    p.add_argument("--plan-only", metavar="POST_JSON", help="only write the post to this file")
+    p.add_argument("--chunk", type=int, metavar="N", help="only draw picture group N (0-based)")
+    p.add_argument("--finish", action="store_true", help="only lay out slides from drawn pictures")
+    p.add_argument("--plan", metavar="POST_JSON", help="post file for --chunk / --finish")
+    p.add_argument("--work", default="work", help="folder for pictures in split mode")
     args = p.parse_args()
 
     cfg = yaml.safe_load((ROOT / "config.yaml").read_text())
     theme = " ".join(args.theme).strip()
     n_slides = args.slides or cfg.get("post_slides", 8)
-    handle = cfg.get("post_handle", "") or ""
+    work = Path(args.work)
 
-    post = write_post(cfg, theme, n_slides, args.out) if not args.layout_test else validate(
-        json.loads(json.dumps(POSTS[0])), 99)
-    post["seed"] = random.randint(1, 10**6)
-    post["theme"] = theme
-    stamp = dt.datetime.now().strftime("%Y%m%d-%H%M%S")
-    folder = Path(args.out) / f"{stamp}-{slugify(post['title'])}"
-    pics = folder / "pictures"
-    pics.mkdir(parents=True)
+    if args.plan_only:
+        post = new_post(cfg, theme, n_slides, args.out, args.layout_test)
+        Path(args.plan_only).parent.mkdir(parents=True, exist_ok=True)
+        Path(args.plan_only).write_text(json.dumps(post, indent=2, ensure_ascii=False))
+        n = -(-len(pages(post)) // PICS_PER_COMPUTER)
+        gh_output(chunks=json.dumps(list(range(n))))
+        return
+    if args.chunk is not None:
+        draw_pictures(json.loads(Path(args.plan).read_text()), work, args.chunk, args.layout_test)
+        return
+    if args.finish:
+        finish(cfg, json.loads(Path(args.plan).read_text()), work, args.out, not args.no_reel)
+        return
 
-    pages = ([("cover", post["cover"]["scene"], post["cover"]["text"])] if post.get("cover") else []) + \
-        [("quote", s["scene"], s["quote"]) for s in post["slides"]]
-    slides = []
-    for i, (kind, scene, text) in enumerate(pages, 1):
-        log(f"Slide {i}/{len(pages)}: {text}")
-        pic = pics / f"picture_{i:02d}.png"
-        if args.layout_test:
-            blank_picture(scene, pic)
-        else:
-            draw_picture(scene, post["seed"] + i, pic)
-            time.sleep(2)  # be polite to the free services
-        dest = folder / f"slide_{i:02d}.png"
-        (make_cover if kind == "cover" else make_slide)(pic, text, dest, handle)
-        slides.append(dest)
-
-    if not args.no_reel:
-        log("Making the reel version...")
-        make_reel(slides, folder / "reel.mp4", cfg.get("post_seconds_per_slide", 3.0),
-                  cfg.get("music_volume", 0.12))
-
-    (folder / "post.json").write_text(json.dumps(post, indent=2, ensure_ascii=False))
-    caption = (f"{post['caption']}\n\n"
-               + "\n".join(f"{i}. {s['quote']}" for i, s in enumerate(post["slides"], 1)) + "\n\n"
-               + " ".join(h if h.startswith("#") else f"#{h}" for h in post["hashtags"]))
-    (folder / "caption.txt").write_text(caption)
-    log(f"DONE -> {folder}  ({len(slides)} slides)")
-    path = os.environ.get("GITHUB_OUTPUT")
-    if path:
-        with open(path, "a") as f:
-            f.write(f"folder={folder}\n")
+    # all-in-one (local use)
+    post = new_post(cfg, theme, n_slides, args.out, args.layout_test)
+    draw_pictures(post, work, layout_test=args.layout_test)
+    finish(cfg, post, work, args.out, not args.no_reel)
+    shutil.rmtree(work)
 
 
 if __name__ == "__main__":
