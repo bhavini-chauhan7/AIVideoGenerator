@@ -9,6 +9,10 @@ characters:
   daddy:
     name: Daddy
     voice: warm, deep, playful adult male voice
+    tts_voice: en-US-GuyNeural      # free voice used by free_agent.py
+    tts_pitch: "-4Hz"
+    tts_rate: "+0%"
+    subtitle_color: "#BFE3FF"
     look: >
       Big, broad-shouldered dad in his early 30s, square jaw, light stubble,
       thick swept-back chestnut-brown hair, bold expressive eyebrows, green eyes,
@@ -17,6 +21,10 @@ characters:
   lily:
     name: Lily
     voice: tiny, giggly, high-pitched toddler girl voice, slightly mispronounced words
+    tts_voice: en-US-AnaNeural      # a child's voice
+    tts_pitch: "+12Hz"
+    tts_rate: "-8%"
+    subtitle_color: "#FFC2E2"
     look: >
       Chubby 2-year-old girl with a big puffy mop of curly copper-red hair tied
       with a pink satin bow on top, rosy cheeks, small button nose, two little
@@ -25,6 +33,10 @@ characters:
   mommy:
     name: Mommy
     voice: gentle, sweet adult female voice with a teasing tone
+    tts_voice: en-US-JennyNeural
+    tts_pitch: "+0Hz"
+    tts_rate: "+0%"
+    subtitle_color: "#FFF1B8"
     look: >
       Young mom in her late 20s with long wavy dark-brown hair, warm brown eyes,
       soft smile, wearing a cream knit sweater.

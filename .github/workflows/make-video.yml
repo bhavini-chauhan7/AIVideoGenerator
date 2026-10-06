@@ -1,0 +1,71 @@
+name: Make a video (free)
+
+on:
+  workflow_dispatch:
+    inputs:
+      idea:
+        description: "Your video idea in one line (leave empty and the agent picks one)"
+        required: false
+        default: ""
+      scenes:
+        description: "How many scenes (each is about 5-8 seconds)"
+        required: false
+        default: "3"
+
+permissions:
+  contents: write   # to save the finished video into the videos/ folder
+  models: read      # free GitHub Models story writer
+
+concurrency:
+  group: make-video
+  cancel-in-progress: false
+
+jobs:
+  make:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg fonts-dejavu-core
+          pip install -q -r requirements-free.txt
+
+      - name: Make the video
+        id: make
+        env:
+          IDEA: ${{ inputs.idea }}
+          SCENES: ${{ inputs.scenes }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: python free_agent.py --scenes "${SCENES:-3}" --out videos -- "$IDEA"
+
+      - name: Upload video
+        uses: actions/upload-artifact@v4
+        with:
+          name: video
+          path: ${{ steps.make.outputs.folder }}
+
+      - name: Save video to the repo (videos/ folder)
+        run: |
+          git config user.name "video-agent"
+          git config user.email "video-agent@users.noreply.github.com"
+          git add videos
+          git commit -m "New video: ${{ steps.make.outputs.folder }}"
+          for i in 1 2 3; do git pull --rebase -q && git push -q && break; sleep 5; done
+
+      - name: Summary
+        run: |
+          echo "## Your video is ready 🎬" >> "$GITHUB_STEP_SUMMARY"
+          echo "Open the **${{ steps.make.outputs.folder }}** folder in the repo and tap **final.mp4**." >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          cat "${{ steps.make.outputs.folder }}/caption.txt" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
