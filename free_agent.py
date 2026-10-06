@@ -441,6 +441,13 @@ def main():
     p.add_argument("-n", "--scenes", type=int, default=None)
     p.add_argument("--out", default="output", help="folder to put videos in")
     p.add_argument("--demo", action="store_true", help="make the first ready-made story")
+    # Split mode (used by GitHub Actions so each scene runs on its own computer
+    # and gets its own free Hugging Face allowance):
+    p.add_argument("--plan-only", metavar="PLAN_JSON", help="only write the story to this file")
+    p.add_argument("--scene", type=int, metavar="N", help="only make scene N (0-based)")
+    p.add_argument("--finish", action="store_true", help="only join scenes that are already made")
+    p.add_argument("--plan", metavar="PLAN_JSON", help="story file for --scene / --finish")
+    p.add_argument("--work", default="work", help="folder for scene files in split mode")
     args = p.parse_args()
 
     cfg = yaml.safe_load((ROOT / "config.yaml").read_text())
@@ -449,45 +456,89 @@ def main():
     idea = " ".join(args.idea).strip()
     if args.demo:
         idea = STORIES[0]["idea"]
+
+    if args.plan_only:
+        plan = new_plan(cfg, cast, idea, n_scenes, args.out)
+        Path(args.plan_only).parent.mkdir(parents=True, exist_ok=True)
+        Path(args.plan_only).write_text(json.dumps(plan, indent=2, ensure_ascii=False))
+        gh_output(scenes=json.dumps(list(range(len(plan["scenes"])))))
+        return
+
     if not shutil.which("ffmpeg"):
         sys.exit("[free-agent] ffmpeg is not installed.")
+    work = Path(args.work)
+    work.mkdir(parents=True, exist_ok=True)
 
-    plan = write_plan(cfg, cast, idea, n_scenes, args.out)
-    stamp = dt.datetime.now().strftime("%Y%m%d-%H%M%S")
-    folder = Path(args.out) / f"{stamp}-{slugify(plan['title'])}"
-    work = folder / "work"
-    work.mkdir(parents=True)
-    (folder / "plan.json").write_text(json.dumps(plan, indent=2, ensure_ascii=False))
-    log(f"Title: {plan['title']}")
+    if args.scene is not None:
+        plan = json.loads(Path(args.plan).read_text())
+        make_scene(cfg, cast, plan, args.scene, work)
+        return
+    if args.finish:
+        plan = json.loads(Path(args.plan).read_text())
+        finish(cfg, plan, work, args.out)
+        return
 
-    seed = random.randint(1, 10**6)  # same seed for every scene helps faces stay similar
-    clips, n_animated = [], 0
-    for i, scene in enumerate(plan["scenes"]):
-        log(f"Scene {i + 1}/{len(plan['scenes'])}: " +
-            (" / ".join(f"{d['speaker']}: {d['line']}" for d in scene["dialogue"]) or "(no lines)"))
-        img = folder / f"scene_{i + 1:02d}.jpg"
-        log("  drawing picture (free)...")
-        make_picture(cfg, cast, scene, seed, img)
-        log("  adding voices and subtitles...")
-        clip, was_animated = build_scene(cfg, cast, scene, i, img, work)
-        clips.append(clip)
-        n_animated += was_animated
+    # all-in-one (local use)
+    plan = new_plan(cfg, cast, idea, n_scenes, args.out)
+    for i in range(len(plan["scenes"])):
+        make_scene(cfg, cast, plan, i, work)
         time.sleep(2)  # be polite to the free services
-
-    final = folder / "final.mp4"
-    join(clips, work / "final.mp4", cfg.get("music_volume", 0.12))
-    shutil.move(str(work / "final.mp4"), final)
+    finish(cfg, plan, work, args.out)
     shutil.rmtree(work)
 
+
+def gh_output(**kv):
+    path = os.environ.get("GITHUB_OUTPUT")
+    if path:
+        with open(path, "a") as f:
+            for k, v in kv.items():
+                f.write(f"{k}={v}\n")
+
+
+def new_plan(cfg, cast, idea, n_scenes, out_dir):
+    plan = write_plan(cfg, cast, idea, n_scenes, out_dir)
+    plan["seed"] = random.randint(1, 10**6)  # same seed for every scene helps faces stay similar
+    log(f"Title: {plan['title']}")
+    return plan
+
+
+def make_scene(cfg, cast, plan, i, work):
+    scene = plan["scenes"][i]
+    log(f"Scene {i + 1}/{len(plan['scenes'])}: " +
+        (" / ".join(f"{d['speaker']}: {d['line']}" for d in scene["dialogue"]) or "(no lines)"))
+    img = work / f"scene_{i + 1:02d}.jpg"
+    log("  drawing picture (free)...")
+    make_picture(cfg, cast, scene, plan.get("seed", 1), img)
+    clip, animated = build_scene(cfg, cast, scene, i, img, work)
+    (work / f"scene_{i + 1:02d}.animated").write_text("1" if animated else "0")
+    return clip
+
+
+def finish(cfg, plan, work, out_dir):
+    n = len(plan["scenes"])
+    clips = [work / f"scene_{i + 1:02d}.mp4" for i in range(n)]
+    missing = [c.name for c in clips if not c.exists()]
+    if missing:
+        sys.exit(f"[free-agent] Missing scenes: {', '.join(missing)}")
+    stamp = dt.datetime.now().strftime("%Y%m%d-%H%M%S")
+    folder = Path(out_dir) / f"{stamp}-{slugify(plan['title'])}"
+    folder.mkdir(parents=True)
+    join(clips, work / "final.mp4", cfg.get("music_volume", 0.12))
+    shutil.move(str(work / "final.mp4"), folder / "final.mp4")
+    for i in range(n):
+        img = work / f"scene_{i + 1:02d}.jpg"
+        if img.exists():
+            shutil.copy(img, folder / img.name)
+    (folder / "plan.json").write_text(json.dumps(plan, indent=2, ensure_ascii=False))
     caption = (f"{plan['hook_caption']}\n\n{plan['description']}\n\n"
                + " ".join(h if h.startswith("#") else f"#{h}" for h in plan["hashtags"])
                + "\n\n(AI-generated content)")
     (folder / "caption.txt").write_text(caption)
-    log(f"DONE -> {final}  ({duration(final):.1f}s, {n_animated}/{len(clips)} scenes animated)")
-    gh_out = os.environ.get("GITHUB_OUTPUT")
-    if gh_out:
-        with open(gh_out, "a") as f:
-            f.write(f"folder={folder}\n")
+    animated = sum((work / f"scene_{i + 1:02d}.animated").read_text().strip() == "1"
+                   for i in range(n) if (work / f"scene_{i + 1:02d}.animated").exists())
+    log(f"DONE -> {folder / 'final.mp4'}  ({duration(folder / 'final.mp4'):.1f}s, {animated}/{n} scenes animated)")
+    gh_output(folder=str(folder))
+    return folder
 
 
 if __name__ == "__main__":

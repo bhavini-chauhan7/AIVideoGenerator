@@ -4,11 +4,11 @@ on:
   workflow_dispatch:
     inputs:
       idea:
-        description: "Your video idea in one line (leave empty and the agent picks one)"
+        description: "Your video idea in one line (leave empty for the next ready-made story)"
         required: false
         default: ""
       scenes:
-        description: "How many scenes (each is about 5-8 seconds)"
+        description: "How many scenes (only used for your own ideas)"
         required: false
         default: "3"
 
@@ -20,44 +20,104 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  make:
+  # 1) Write the story (ready-made, or by a free AI running on this computer)
+  story:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 30
+    outputs:
+      scenes: ${{ steps.plan.outputs.scenes }}
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-
       - name: Install tools
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq ffmpeg fonts-dejavu-core
           pip install -q torch --index-url https://download.pytorch.org/whl/cpu
           pip install -q -r requirements-free.txt
-
       - name: Remember the free story AI between runs
         uses: actions/cache@v4
         with:
           path: ~/.cache/huggingface
           key: hf-qwen2.5-3b-instruct
-
-      - name: Make the video
-        id: make
+      - name: Write the story
+        id: plan
         env:
           IDEA: ${{ inputs.idea }}
           SCENES: ${{ inputs.scenes }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: python free_agent.py --scenes "${SCENES:-3}" --out videos -- "$IDEA"
+        run: python free_agent.py --plan-only work/plan.json --scenes "${SCENES:-3}" --out videos -- "$IDEA"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: plan
+          path: work/plan.json
 
-      - name: Upload video
-        uses: actions/upload-artifact@v4
+  # 2) Each scene on its own computer, so each gets its own free picture/animation allowance
+  scene:
+    needs: story
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        index: ${{ fromJSON(needs.story.outputs.scenes) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg fonts-dejavu-core
+          pip install -q requests edge-tts PyYAML gradio_client
+      - uses: actions/download-artifact@v4
+        with:
+          name: plan
+          path: work
+      - name: Draw, animate and voice scene ${{ matrix.index }}
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: python free_agent.py --scene ${{ matrix.index }} --plan work/plan.json --work work/scene
+      - uses: actions/upload-artifact@v4
+        with:
+          name: scene-${{ matrix.index }}
+          path: |
+            work/scene/scene_*.mp4
+            work/scene/scene_*.jpg
+            work/scene/scene_*.animated
+
+  # 3) Join the scenes into the final video and save it
+  finish:
+    needs: scene
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+          pip install -q requests PyYAML
+      - uses: actions/download-artifact@v4
+        with:
+          name: plan
+          path: work
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: scene-*
+          merge-multiple: true
+          path: work/scenes
+      - name: Join scenes
+        id: make
+        run: python free_agent.py --finish --plan work/plan.json --work work/scenes --out videos
+      - uses: actions/upload-artifact@v4
         with:
           name: video
           path: ${{ steps.make.outputs.folder }}
-
       - name: Save video to the repo (videos/ folder)
         run: |
           git config user.name "video-agent"
@@ -65,7 +125,6 @@ jobs:
           git add videos
           git commit -m "New video: ${{ steps.make.outputs.folder }}"
           for i in 1 2 3; do git pull --rebase -q && git push -q && break; sleep 5; done
-
       - name: Summary
         run: |
           echo "## Your video is ready 🎬" >> "$GITHUB_STEP_SUMMARY"
