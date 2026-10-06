@@ -1,0 +1,66 @@
+{
+  "idea": "baby catches daddy eating her cookies",
+  "title": "Daddy's Cookie Crime",
+  "hook_caption": "\"I tell Mommy on you!\" 😂🍪❤️",
+  "description": "She caught me red-handed... and negotiated like a pro. Daddy's cookie crime is safe, for now.",
+  "hashtags": [
+    "pixar",
+    "dadlife",
+    "toddlersbelike",
+    "cutebaby",
+    "fatherdaughter",
+    "funnybaby"
+  ],
+  "scenes": [
+    {
+      "characters": [
+        "daddy",
+        "lily"
+      ],
+      "image_prompt": "Cozy kitchen at night under a warm lamp. The dad is frozen mid-bite with a cookie in his mouth and his hand inside a pink cookie jar, eyes wide and guilty. Beside him the little girl stands holding a teddy bear, pointing up at him with a shocked open mouth. Medium shot.",
+      "action": "slow push in on the dad's guilty face",
+      "dialogue": [
+        {
+          "speaker": "lily",
+          "line": "Daddyyy! Dat MY cookie!"
+        }
+      ]
+    },
+    {
+      "characters": [
+        "daddy",
+        "lily"
+      ],
+      "image_prompt": "Cozy kitchen at night. The dad crouches down to the little girl's height with cookie crumbs on his chin, holding a finger to his lips with an awkward smile. The little girl has her arms crossed and her chin up, squinting at him suspiciously. Close two-shot.",
+      "action": "gentle drift between their faces",
+      "dialogue": [
+        {
+          "speaker": "daddy",
+          "line": "Shhh... our little secret?"
+        },
+        {
+          "speaker": "lily",
+          "line": "Hmph! I tell Mommy on you!"
+        }
+      ]
+    },
+    {
+      "characters": [
+        "daddy",
+        "lily"
+      ],
+      "image_prompt": "Cozy kitchen at night with golden bokeh. The little girl happily hugs the dad's neck while holding a half-eaten cookie, giggling with eyes squeezed shut. The dad melts with a huge happy smile. Close-up, heartwarming.",
+      "action": "slow zoom out",
+      "dialogue": [
+        {
+          "speaker": "lily",
+          "line": "Otay... secret, Daddy. Hee hee!"
+        },
+        {
+          "speaker": "daddy",
+          "line": "Best partner in crime ever."
+        }
+      ]
+    }
+  ]
+}
