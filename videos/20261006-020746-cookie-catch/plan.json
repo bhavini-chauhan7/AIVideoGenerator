@@ -1,0 +1,46 @@
+{
+  "title": "Cookie Catch",
+  "hook_caption": "\"Oops, I caught you eating my cookie!\"",
+  "description": "The curious little girl finds herself in a sticky situation as she discovers her father munching on a treat.",
+  "hashtags": [
+    "pixar",
+    "dadlife",
+    "toddlersbelike",
+    "cutebaby",
+    "fatherdaughter",
+    "funnybaby"
+  ],
+  "scenes": [
+    {
+      "characters": [
+        "daddy"
+      ],
+      "image_prompt": "Big, round kitchen table where Dad is seated at a high chair with a plate of cookies, partially eaten but untouched by anyone else. Lily sits beside him on a nearby stool, holding onto a toy mouse.",
+      "action": "Slow pull back from the action to show a close-up of Dad’s face with a surprised look mixed with guilt. Lily leans forward curiously.",
+      "dialogue": [
+        {
+          "speaker": "lily",
+          "line": "Oops, I caught you eating my cookie!"
+        }
+      ]
+    },
+    {
+      "characters": [
+        "lily"
+      ],
+      "image_prompt": "Dad has his hands over his mouth and nose, looking embarrassed. Lily points accusingly at him, her eyes wide with surprise.",
+      "action": "Move Lily closer and more focused towards Dad. They share a tense moment. Slowly, they both turn away from each other, Lily standing proud with a slight blush.",
+      "dialogue": [
+        {
+          "speaker": "lily",
+          "line": "It’s okay, it was just a joke!"
+        },
+        {
+          "speaker": "daddy",
+          "line": "No worries, we’re partners in crime!"
+        }
+      ]
+    }
+  ],
+  "idea": "baby catches daddy eating her cookies"
+}
