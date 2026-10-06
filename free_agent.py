@@ -194,7 +194,9 @@ def write_plan(cfg, cast, idea, n_scenes, out_dir):
 def scene_prompt(cfg, cast, scene):
     looks = " ".join(f"{cast['characters'][c]['name']}: {cast['characters'][c]['look'].strip()}"
                      for c in scene["characters"])
-    return f"{cfg['style'].strip()} {scene['image_prompt']} Characters: {looks}"
+    n = len(scene["characters"])
+    count = "Only one character in the picture." if n == 1 else f"Exactly {n} different characters in the picture, each appearing once, no one else."
+    return f"{cfg['style'].strip()} {scene['image_prompt']} {count} Characters: {looks}"
 
 
 def image_pollinations(prompt, seed, dest):

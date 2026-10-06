@@ -8,6 +8,7 @@ plus a caption ready to paste into Reels, Shorts or TikTok.
 1. Open this repo on GitHub (the website or the GitHub app) and tap **Actions**.
 2. Tap **Make a video (free)**, then **Run workflow**.
 3. Type your idea, for example *daddy tries to braid Lily's hair*, and tap the green **Run workflow** button.
+   Leave the idea **empty** to get the next ready-made story from `stories.yaml` (12 funny, hand-written stories).
 4. Wait about 5 minutes. Your video appears in the **`videos/`** folder. Tap the newest folder, then `final.mp4`.
    The caption to paste is in `caption.txt` in the same folder.
 
