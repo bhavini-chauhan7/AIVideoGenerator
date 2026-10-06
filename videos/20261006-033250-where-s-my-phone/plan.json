@@ -1,0 +1,63 @@
+{
+  "idea": "Lily hides daddy's phone and acts innocent",
+  "title": "Where's My Phone?",
+  "hook_caption": "\"I not know, Daddy\" 📱😇",
+  "description": "The phone was in the toy oven. Obviously.",
+  "hashtags": [
+    "pixar",
+    "dadlife",
+    "toddlersbelike",
+    "cutebaby",
+    "innocent",
+    "funny"
+  ],
+  "scenes": [
+    {
+      "characters": [
+        "daddy",
+        "lily"
+      ],
+      "image_prompt": "Living room. The dad searches under the sofa cushions with a confused frustrated face. Behind him the little girl sits very straight on a chair with her hands folded and a super innocent angelic smile. Medium wide shot.",
+      "action": "The dad digs under the sofa cushions; behind him the little girl swings her legs and smiles innocently.",
+      "dialogue": [
+        {
+          "speaker": "daddy",
+          "line": "Lily, have you seen Daddy's phone?"
+        },
+        {
+          "speaker": "lily",
+          "line": "Nope. I not know."
+        }
+      ]
+    },
+    {
+      "characters": [
+        "daddy",
+        "lily"
+      ],
+      "image_prompt": "Living room. Close-up of the little girl with a too-innocent smile, eyes looking sideways toward a pink toy kitchen oven, from which a phone is glowing and ringing. The dad leans in suspiciously. Close two-shot.",
+      "action": "The toy oven glows and buzzes; the little girl's eyes dart toward it; the dad leans closer suspiciously.",
+      "dialogue": [
+        {
+          "speaker": "daddy",
+          "line": "Then why is your oven ringing?"
+        }
+      ]
+    },
+    {
+      "characters": [
+        "daddy",
+        "lily"
+      ],
+      "image_prompt": "Living room. The dad holds his phone, which is covered in stickers and wrapped in a tiny blanket. The little girl giggles. The dad laughs and lifts her up. Warm close-up.",
+      "action": "The dad unwraps the phone from a tiny blanket; the little girl giggles and he scoops her up.",
+      "dialogue": [
+        {
+          "speaker": "lily",
+          "line": "Phone was cold. I make it cozy!"
+        }
+      ]
+    }
+  ],
+  "seed": 744423
+}
