@@ -41,3 +41,9 @@ music_volume: 0.12         # if assets/music has any .mp3, one is mixed in quiet
 
 # --- FREE agent (free_agent.py) ---
 free_story_model: Qwen/Qwen2.5-3B-Instruct   # free story writer that runs on the CPU (no account)
+free_animation: true                    # animate pictures with free Hugging Face spaces
+free_clip_seconds: 5.0                  # length of each animated clip (more = uses free allowance faster)
+free_video_spaces:                      # tried in order
+  - zerogpu-aoti/wan2-2-fp8da-aoti-faster
+  - r3gm/wan2-2-fp8da-aoti-preview
+  - Saravutw/WAN2.2_I2V_LIGHTNING_4-8step_custom

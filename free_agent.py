@@ -9,10 +9,11 @@ How it stays free:
               AI (Qwen) running on this computer's CPU
   pictures -> free Hugging Face FLUX space (fallback: free Pollinations image API)
   voices   -> free Microsoft Edge read-aloud voices (edge-tts), incl. a child voice
-  video    -> ffmpeg: slow camera moves on each picture + voices + big subtitles
+  motion   -> free Hugging Face Wan 2.2 spaces animate each picture (a few clips
+              per day free; falls back to slow camera moves when used up)
+  video    -> ffmpeg: clips + voices + big subtitles
 
-The result is a "talking storybook" style short. For true animation with
-lip-sync, use the paid agent.py instead.
+No lip-sync (that needs the paid agent.py).
 """
 import argparse
 import asyncio
@@ -275,7 +276,84 @@ MOVES = [
 ]
 
 
-def build_scene(cast, scene, idx, img, folder):
+# --------------------------------------------------------------------------
+# Animation (free Hugging Face "ZeroGPU" spaces running Wan 2.2)
+# --------------------------------------------------------------------------
+
+DEFAULT_VIDEO_SPACES = [
+    "zerogpu-aoti/wan2-2-fp8da-aoti-faster",
+    "r3gm/wan2-2-fp8da-aoti-preview",
+    "Saravutw/WAN2.2_I2V_LIGHTNING_4-8step_custom",
+]
+_clients = {}
+_quota_used_up = False
+
+
+def find_mp4(result):
+    if isinstance(result, str):
+        return result if result.lower().endswith((".mp4", ".webm", ".mov")) else None
+    if isinstance(result, dict):
+        result = list(result.values())
+    if isinstance(result, (list, tuple)):
+        for item in result:
+            found = find_mp4(item)
+            if found:
+                return found
+    return None
+
+
+def animate(cfg, scene, img, dest, seconds):
+    """Turn the still picture into a moving clip. Returns True on success."""
+    global _quota_used_up
+    if _quota_used_up or not cfg.get("free_animation", True):
+        return False
+    from gradio_client import Client, handle_file
+
+    token = os.environ.get("HF_TOKEN")
+    prompt = (f"3D Pixar-style animation. {scene.get('action', '')} Smooth natural lively motion, "
+              "expressive faces, characters keep the same look, steady camera.")
+    for space in cfg.get("free_video_spaces", DEFAULT_VIDEO_SPACES):
+        try:
+            if space not in _clients:
+                _clients[space] = Client(space, **({"token": token} if token else {}))
+            job = _clients[space].submit(input_image=handle_file(str(img)), prompt=prompt,
+                                         duration_seconds=seconds, api_name="/generate_video")
+            path = find_mp4(job.result(timeout=420))
+            if not path:
+                raise RuntimeError("no video returned")
+            shutil.copy(path, dest)
+            log(f"  animated with {space}")
+            return True
+        except Exception as e:
+            msg = str(e)
+            log(f"  animation via {space} failed: {msg[:200]}")
+            if "quota" in msg.lower():
+                _quota_used_up = True  # the free daily allowance is shared by all spaces
+                log("  free daily animation allowance used up; remaining scenes use camera moves")
+                return False
+    return False
+
+
+# --------------------------------------------------------------------------
+# Scene assembly
+# --------------------------------------------------------------------------
+
+def subtitle_filters(cast, cues, idx, folder):
+    vf = []
+    for k, (d, start, end) in enumerate(cues):
+        color = cast["characters"][d["speaker"]].get("subtitle_color", "white")
+        lines = textwrap.wrap(d["line"], 18)
+        for li, text in enumerate(lines):
+            tf = folder / f"s{idx}_cue{k}_{li}.txt"
+            tf.write_text(text)
+            ypos = int(H * 0.70) + li * 92 - (len(lines) - 1) * 46
+            vf.append(f"drawtext=fontfile={FONT}:textfile={tf}:expansion=none:fontsize=72:"
+                      f"fontcolor={color}:borderw=7:bordercolor=black@0.85:"
+                      f"x=(w-text_w)/2:y={ypos}:enable='between(t,{start:.2f},{end:.2f})'")
+    return vf
+
+
+def build_scene(cfg, cast, scene, idx, img, folder):
     # 1) voices, laid out on a timeline
     parts, cues, t = [], [], LEAD
     for j, d in enumerate(scene["dialogue"]):
@@ -285,7 +363,31 @@ def build_scene(cast, scene, idx, img, folder):
         parts.append((mp3, t))
         cues.append((d, t, t + dur + 0.25))
         t += dur + GAP
-    total = max(t - GAP + TAIL, 3.5) if parts else 4.0
+    voice_total = max(t - GAP + TAIL, 3.5) if parts else 4.0
+
+    # 2) try to animate the picture; fall back to a slow camera move
+    clip = folder / f"s{idx}_anim.mp4"
+    want = round(min(max(voice_total, 3.5), cfg.get("free_clip_seconds", 5.0)), 1)
+    log("  animating (free)...")
+    animated = animate(cfg, scene, img, clip, want)
+
+    if animated:
+        cd = duration(clip)
+        total = max(voice_total, cd)
+        slow = min(total / cd, 1.3)  # stretch motion a little if the talking runs long
+        hold = max(total - cd * slow, 0)
+        vf = [f"setpts=PTS*{slow:.3f}", f"fps={FPS}",
+              f"scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H}"]
+        if hold > 0.01:
+            vf.append(f"tpad=stop_mode=clone:stop_duration={hold:.3f}")
+        src = ["-i", clip]
+    else:
+        total = voice_total
+        frames = int(total * FPS)
+        z, x, y = MOVES[idx % len(MOVES)]
+        vf = [f"scale={W * 2}:{H * 2}:force_original_aspect_ratio=increase,crop={W * 2}:{H * 2}",
+              f"zoompan=z='{z}':x='{x.format(n=frames)}':y='{y.format(n=frames)}':d={frames}:s={W}x{H}:fps={FPS}"]
+        src = ["-loop", "1", "-framerate", FPS, "-i", img]
 
     audio = folder / f"s{idx}_audio.wav"
     if parts:
@@ -300,28 +402,14 @@ def build_scene(cast, scene, idx, img, folder):
     else:
         ffmpeg("-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo", "-t", f"{total:.3f}", audio)
 
-    # 2) picture with a slow camera move + subtitles
-    frames = int(total * FPS)
-    z, x, y = MOVES[idx % len(MOVES)]
-    vf = [f"scale={W * 2}:{H * 2}:force_original_aspect_ratio=increase,crop={W * 2}:{H * 2}",
-          f"zoompan=z='{z}':x='{x.format(n=frames)}':y='{y.format(n=frames)}':d={frames}:s={W}x{H}:fps={FPS}"]
-    for k, (d, start, end) in enumerate(cues):
-        color = cast["characters"][d["speaker"]].get("subtitle_color", "white")
-        lines = textwrap.wrap(d["line"], 18)
-        for li, text in enumerate(lines):
-            tf = folder / f"s{idx}_cue{k}_{li}.txt"
-            tf.write_text(text)
-            ypos = int(H * 0.70) + li * 92 - (len(lines) - 1) * 46
-            vf.append(f"drawtext=fontfile={FONT}:textfile={tf}:expansion=none:fontsize=72:"
-                      f"fontcolor={color}:borderw=7:bordercolor=black@0.85:"
-                      f"x=(w-text_w)/2:y={ypos}:enable='between(t,{start:.2f},{end:.2f})'")
-    vf += [f"fade=t=in:st=0:d=0.25", f"fade=t=out:st={total - 0.25:.2f}:d=0.25", "format=yuv420p"]
+    vf += subtitle_filters(cast, cues, idx, folder)
+    vf += ["fade=t=in:st=0:d=0.25", f"fade=t=out:st={total - 0.25:.2f}:d=0.25", "format=yuv420p"]
 
     out = folder / f"scene_{idx + 1:02d}.mp4"
-    ffmpeg("-loop", "1", "-framerate", FPS, "-i", img, "-i", audio, "-vf", ",".join(vf),
+    ffmpeg(*src, "-i", audio, "-map", "0:v", "-map", "1:a", "-vf", ",".join(vf),
            "-t", f"{total:.3f}", "-c:v", "libx264", "-preset", "medium", "-crf", "21",
-           "-c:a", "aac", "-b:a", "160k", "-shortest", out)
-    return out
+           "-c:a", "aac", "-b:a", "160k", out)
+    return out, animated
 
 
 def join(clips, dest, music_volume):
@@ -373,15 +461,17 @@ def main():
     log(f"Title: {plan['title']}")
 
     seed = random.randint(1, 10**6)  # same seed for every scene helps faces stay similar
-    clips = []
+    clips, n_animated = [], 0
     for i, scene in enumerate(plan["scenes"]):
         log(f"Scene {i + 1}/{len(plan['scenes'])}: " +
             (" / ".join(f"{d['speaker']}: {d['line']}" for d in scene["dialogue"]) or "(no lines)"))
         img = folder / f"scene_{i + 1:02d}.jpg"
         log("  drawing picture (free)...")
         make_picture(cfg, cast, scene, seed, img)
-        log("  adding voices, camera move and subtitles...")
-        clips.append(build_scene(cast, scene, i, img, work))
+        log("  adding voices and subtitles...")
+        clip, was_animated = build_scene(cfg, cast, scene, i, img, work)
+        clips.append(clip)
+        n_animated += was_animated
         time.sleep(2)  # be polite to the free services
 
     final = folder / "final.mp4"
@@ -393,7 +483,7 @@ def main():
                + " ".join(h if h.startswith("#") else f"#{h}" for h in plan["hashtags"])
                + "\n\n(AI-generated content)")
     (folder / "caption.txt").write_text(caption)
-    log(f"DONE -> {final}  ({duration(final):.1f}s)")
+    log(f"DONE -> {final}  ({duration(final):.1f}s, {n_animated}/{len(clips)} scenes animated)")
     gh_out = os.environ.get("GITHUB_OUTPUT")
     if gh_out:
         with open(gh_out, "a") as f:
