@@ -5,9 +5,9 @@
     python free_agent.py            # no idea? it invents one (or uses a built-in demo)
 
 How it stays free:
-  story    -> Claude if ANTHROPIC_API_KEY is set, otherwise free GitHub Models
-              (inside GitHub Actions) or the free Pollinations text API
-  pictures -> free Pollinations image API (fallback: free Hugging Face FLUX space)
+  story    -> Claude if ANTHROPIC_API_KEY is set, otherwise a small open-source
+              AI (Qwen) running on this computer's CPU
+  pictures -> free Hugging Face FLUX space (fallback: free Pollinations image API)
   voices   -> free Microsoft Edge read-aloud voices (edge-tts), incl. a child voice
   video    -> ffmpeg: slow camera moves on each picture + voices + big subtitles
 
@@ -122,30 +122,45 @@ def parse_json(text):
     return json.loads(m.group(0) if m else text)
 
 
-def llm_github_models(prompt, model):
-    token = os.environ.get("GITHUB_TOKEN")
-    if not token:
-        raise RuntimeError("no GITHUB_TOKEN")
-    r = requests.post(
-        "https://models.github.ai/inference/chat/completions",
-        headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
-        json={"model": model, "messages": [{"role": "user", "content": prompt}], "temperature": 0.9},
-        timeout=120,
-    )
-    r.raise_for_status()
-    return r.json()["choices"][0]["message"]["content"]
+IDEAS = [
+    "baby catches daddy eating her cookies",
+    "Lily puts makeup on daddy while he naps",
+    "daddy pretends Lily's tiny roar is the scariest thing ever",
+    "mommy asks who made the mess and Lily points at daddy",
+    "Lily tries to say 'I love you' but mispronounces it",
+    "daddy tries to braid Lily's hair for the first time",
+    "Lily refuses to share her ice cream with daddy",
+    "Lily teaches daddy how to dance",
+    "daddy pretends to cry so Lily will give him a hug",
+    "Lily hides daddy's phone and acts innocent",
+    "Lily wants daddy to wear her pink bow",
+    "daddy and Lily have a tickle fight",
+    "Lily insists her teddy bear is hungry at the restaurant",
+    "Lily tells mommy that daddy said a bad word",
+    "Lily wakes daddy up at 5am to play",
+]
 
 
-def llm_pollinations(prompt):
-    r = requests.post(
-        "https://text.pollinations.ai/openai",
-        headers=UA,
-        json={"model": "openai", "messages": [{"role": "user", "content": prompt}],
-              "seed": random.randint(1, 10**6)},
-        timeout=180,
-    )
-    r.raise_for_status()
-    return r.json()["choices"][0]["message"]["content"]
+def llm_local(prompt, model_id):
+    """Small open-source AI that runs right here on the CPU: free, no account."""
+    import torch
+    from transformers import AutoModelForCausalLM, AutoTokenizer
+
+    torch.set_num_threads(os.cpu_count() or 4)
+    tok = AutoTokenizer.from_pretrained(model_id)
+    model = AutoModelForCausalLM.from_pretrained(model_id, torch_dtype=torch.float32)
+    example = json.dumps(DEMO_PLAN, ensure_ascii=False)
+    msgs = [
+        {"role": "system", "content": "You are a funny, warm screenwriter. You answer with valid JSON only."},
+        {"role": "user", "content": prompt + "\n\nExample of the exact JSON format (write a NEW story, "
+                                             "do not copy this one):\n" + example},
+    ]
+    text = tok.apply_chat_template(msgs, add_generation_prompt=True, tokenize=False)
+    ids = tok(text, return_tensors="pt").input_ids
+    with torch.no_grad():
+        out = model.generate(ids, max_new_tokens=1100, do_sample=True, temperature=0.8, top_p=0.9,
+                             pad_token_id=tok.eos_token_id)
+    return tok.decode(out[0][ids.shape[1]:], skip_special_tokens=True)
 
 
 def validate_plan(plan, cast, n_scenes):
@@ -179,26 +194,22 @@ def write_plan(cfg, cast, idea, n_scenes):
         except Exception as e:  # fall through to the free writers
             log(f"Claude unavailable ({e}); using a free writer")
 
-    prompt = story_prompt(cast, idea, n_scenes, language)
-    writers = [
-        ("GitHub Models", lambda: llm_github_models(prompt, cfg.get("free_story_model", "openai/gpt-4.1-mini"))),
-        ("Pollinations", lambda: llm_pollinations(prompt)),
-    ]
-    for name, fn in writers:
-        for attempt in range(2):
-            try:
-                log(f"Writing the story with {name} (free)...")
-                plan = validate_plan(parse_json(fn()), cast, n_scenes)
-                plan["idea"] = idea
-                return plan
-            except Exception as e:
-                log(f"  {name} failed: {e}")
-                time.sleep(3)
-
     if not idea:
-        log("No free story writer reachable; using the built-in demo story.")
+        idea = random.choice(IDEAS)
+        log(f"No idea given, the agent picked: {idea}")
+    prompt = story_prompt(cast, idea, n_scenes, language)
+    model_id = cfg.get("free_story_model", "Qwen/Qwen2.5-1.5B-Instruct")
+    for attempt in range(3):
+        try:
+            log(f"Writing the story with a free AI on this computer ({model_id})...")
+            plan = validate_plan(parse_json(llm_local(prompt, model_id)), cast, n_scenes)
+            plan["idea"] = idea
+            return plan
+        except Exception as e:
+            log(f"  attempt {attempt + 1} failed: {e}")
+    if idea == DEMO_PLAN["idea"]:
         return json.loads(json.dumps(DEMO_PLAN))
-    sys.exit("[free-agent] Could not reach any free story writer. Try again in a few minutes.")
+    sys.exit("[free-agent] The free story writer could not write a story. Please try again.")
 
 
 # --------------------------------------------------------------------------
@@ -235,10 +246,13 @@ def image_huggingface(prompt, seed, dest):
 
 def make_picture(cfg, cast, scene, seed, dest):
     prompt = scene_prompt(cfg, cast, scene)
-    for name, fn in (("Pollinations", image_pollinations), ("Hugging Face", image_huggingface)):
+    raw = dest.with_suffix(".download")
+    for name, fn in (("Hugging Face", image_huggingface), ("Pollinations", image_pollinations)):
         for attempt in range(3):
             try:
-                fn(prompt, seed, dest)
+                fn(prompt, seed, raw)
+                ffmpeg("-i", raw, "-q:v", "2", dest)
+                raw.unlink()
                 return
             except Exception as e:
                 log(f"  {name} image attempt {attempt + 1} failed: {e}")

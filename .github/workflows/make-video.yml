@@ -14,7 +14,6 @@ on:
 
 permissions:
   contents: write   # to save the finished video into the videos/ folder
-  models: read      # free GitHub Models story writer
 
 concurrency:
   group: make-video
@@ -35,14 +34,20 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq ffmpeg fonts-dejavu-core
+          pip install -q torch --index-url https://download.pytorch.org/whl/cpu
           pip install -q -r requirements-free.txt
+
+      - name: Remember the free story AI between runs
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-qwen2.5-1.5b-instruct
 
       - name: Make the video
         id: make
         env:
           IDEA: ${{ inputs.idea }}
           SCENES: ${{ inputs.scenes }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: python free_agent.py --scenes "${SCENES:-3}" --out videos -- "$IDEA"

@@ -40,4 +40,4 @@ output_height: 1920
 music_volume: 0.12         # if assets/music has any .mp3, one is mixed in quietly
 
 # --- FREE agent (free_agent.py) ---
-free_story_model: openai/gpt-4.1-mini   # free GitHub Models story writer (used inside GitHub Actions)
+free_story_model: Qwen/Qwen2.5-1.5B-Instruct   # free story writer that runs on the CPU (no account)

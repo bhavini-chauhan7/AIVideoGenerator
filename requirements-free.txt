@@ -2,3 +2,4 @@ requests>=2.31
 edge-tts>=7.0
 PyYAML>=6.0
 gradio_client>=1.0
+transformers>=4.45
