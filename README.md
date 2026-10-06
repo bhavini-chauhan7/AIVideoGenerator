@@ -3,6 +3,24 @@
 Type one line. Get back a finished, vertical, Pixar-style family video with voices,
 plus a caption ready to paste into Reels, Shorts or TikTok.
 
+## 🆓 FREE version: no keys, no money, nothing to install
+
+1. Open this repo on GitHub (the website or the GitHub app) and tap **Actions**.
+2. Tap **Make a video (free)**, then **Run workflow**.
+3. Type your idea, for example *daddy tries to braid Lily's hair*, and tap the green **Run workflow** button.
+4. Wait about 5 minutes. Your video appears in the **`videos/`** folder. Tap the newest folder, then `final.mp4`.
+   The caption to paste is in `caption.txt` in the same folder.
+
+The free version makes "talking storybook" videos: Pixar-style pictures with slow camera moves, character
+voices (including a little girl's voice) and big coloured subtitles. Characters don't move their lips.
+For real animation with lip-sync, use the paid version below.
+
+Note: this repo is public, so the videos in `videos/` can be seen by anyone with the link.
+
+---
+
+## Paid version (real animation + lip-sync)
+
 ```
 python agent.py make "baby tells daddy she'll tell on him to mommy"
 ```
