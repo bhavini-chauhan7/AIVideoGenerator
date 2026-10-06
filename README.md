@@ -24,6 +24,24 @@ Note: this repo is public, so the videos in `videos/` can be seen by anyone with
 
 ---
 
+## ✨ FREE motivational carousel posts
+
+Hand-drawn, coloured-pencil pictures with a handwritten quote under each one
+(like *ants marching past a giant candy: "Let your focus be stronger than your distractions."*).
+
+1. On GitHub, tap **Actions** → **Make a motivational post (free)** → **Run workflow**.
+2. Type a theme (*never give up*, *self-love*, *discipline*), or leave it **empty** for the next
+   ready-made post from `motivation.yaml` (3 posts, 24 quotes, all written for you).
+3. Wait about 5 minutes. Your post appears in the **`posts/`** folder:
+   - `slide_01.png`, `slide_02.png` ... upload them together as one Instagram carousel (1080×1350).
+   - `caption.txt` is the caption with hashtags.
+   - `reel.mp4` is the same post as a slideshow video for Reels / Shorts / TikTok.
+
+To print your page name on every slide, set `post_handle: "@yourpage"` in `config.yaml`.
+Free AI sometimes adds stray letters to a picture. If a slide looks odd, just run it again.
+
+---
+
 ## Paid version (real animation + lip-sync)
 
 ```

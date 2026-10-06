@@ -1,0 +1,72 @@
+# Ready-made motivational carousels. When you run "Make a motivational post (free)"
+# with NO idea, it makes the next post from this list that hasn't been made yet.
+# Add your own: copy one block and change the words.
+#   cover:  the first slide (a picture + a big hook line + "swipe")
+#   slides: one picture + one short quote each. "scene" describes the picture;
+#           keep it to ONE simple symbolic moment and never ask for words in it.
+
+- title: Mirror For Your Soul
+  cover:
+    scene: A small child sitting on a hill looking up at a huge glowing full moon, tiny stars around.
+    text: Some images don't just catch your attention. They hold a mirror to your soul.
+  caption: Some images don't just catch your attention... they hold a mirror in front of your soul 🪞✨ Which one hit you the hardest? 👇
+  hashtags: [motivation, mindset, selfgrowth, inspiration, quotes, successmindset, dailymotivation, positivevibes]
+  slides:
+  - scene: A tiny green seedling pushing up through a crack in a heavy grey concrete slab, little bits of broken concrete around it.
+    quote: Pressure is not the end of growth. It's where it begins.
+  - scene: A little turtle walking steadily along a dirt path while a rabbit sleeps under a tree far behind.
+    quote: Slow progress is still progress.
+  - scene: A big elephant tied to a tiny wooden stake in the ground with a thin rope, looking down at it.
+    quote: Some chains exist only in your mind.
+  - scene: A small bird sitting calmly on a thin cracked branch that is bending, wings slightly open.
+    quote: A bird trusts its wings, not the branch.
+  - scene: A tiny ant carrying a big green leaf many times its size up a small hill.
+    quote: You are stronger than the weight you carry.
+  - scene: A green caterpillar looking into a puddle and seeing a colourful butterfly reflected in the water.
+    quote: Who you are becoming matters more than who you were.
+  - scene: A small paper boat sailing on stormy blue waves towards a red and white lighthouse.
+    quote: Calm seas never made a skilled sailor.
+  - scene: One lit candle leaning over to light a second candle, both glowing warmly.
+    quote: You lose nothing by helping someone else shine.
+
+- title: Discipline Over Motivation
+  cover:
+    scene: A single small runner's shoe on a starting line drawn on the ground, a long road ahead.
+    text: Motivation gets you started. Discipline keeps you going.
+  caption: Save this for the days you don't feel like it 💪📌 Motivation fades. Habits stay.
+  hashtags: [discipline, motivation, habits, consistency, mindset, selfimprovement, grind, quotes]
+  slides:
+  - scene: A drop of water falling onto a big round rock that has a deep hollow worn into it.
+    quote: Small things done every day beat big things done once.
+  - scene: A snail climbing a tall staircase, already halfway up, a small trail behind it.
+    quote: Don't count the steps. Just take the next one.
+  - scene: A row of bees flying in a line past a big open box of colourful sweets, towards a flower.
+    quote: Let your focus be louder than your temptations.
+  - scene: A young tree tied to a straight wooden stick so it grows tall and straight.
+    quote: Discipline is the support that lets you grow straight.
+  - scene: An old wooden alarm clock ringing with a pair of sneakers ready beside it in early morning light.
+    quote: You don't need to feel ready. You need to start.
+  - scene: A spider rebuilding its web between two twigs after it was torn, half finished.
+    quote: Fall apart if you must. Then rebuild, thread by thread.
+  - scene: A mountain climber's small flag planted on top of a high peak above the clouds.
+    quote: The view at the top belongs to those who kept climbing.
+
+- title: Patience Pays
+  cover:
+    scene: A small clay flower pot with nothing visible yet, a watering can beside it, sunshine.
+    text: Everything you want is growing. Even when you can't see it.
+  caption: Patience is not waiting. It's how you behave while you wait 🌱 Send this to someone who needs it today ❤️
+  hashtags: [patience, growth, motivation, trusttheprocess, mindset, selflove, inspiration, quotes]
+  slides:
+  - scene: A cross-section of soil showing a bamboo seed with very long roots spreading underground and only a tiny shoot above.
+    quote: Before it grows up, it grows deep.
+  - scene: A small hen sitting patiently on a nest of eggs, one egg starting to crack.
+    quote: Good things break through at the right time.
+  - scene: A grey cocoon hanging from a twig with a butterfly wing just beginning to come out.
+    quote: The struggle is what makes the wings strong.
+  - scene: A cute old man planting a tiny tree next to a bench where its future shade will fall.
+    quote: Plant today what you want to sit under tomorrow.
+  - scene: A tiny boat waiting at a shore as the sun rises over calm water.
+    quote: The tide always turns for those who wait for it.
+  - scene: A crescent moon slowly turning into a full moon, shown as a row of moon phases.
+    quote: Even the moon takes time to be whole.

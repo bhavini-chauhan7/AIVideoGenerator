@@ -47,3 +47,8 @@ free_video_spaces:                      # tried in order
   - zerogpu-aoti/wan2-2-fp8da-aoti-faster
   - r3gm/wan2-2-fp8da-aoti-preview
   - Saravutw/WAN2.2_I2V_LIGHTNING_4-8step_custom
+
+# --- Motivational posts (post_agent.py) ---
+post_slides: 8                 # quote slides for your own theme (plus a cover)
+post_seconds_per_slide: 3.0    # in the reel.mp4 slideshow version
+post_handle: ""                # e.g. "@yourpage" to print it small at the bottom of every slide
