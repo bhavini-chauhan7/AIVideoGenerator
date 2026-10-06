@@ -1,0 +1,30 @@
+# Your recurring cast. Keep these descriptions identical forever so every video
+# looks like the same family. Run `python agent.py characters` once to draw a
+# reference picture of each one (saved to characters/<id>.png). You can also
+# drop your own picture there instead — it will be used as the reference.
+
+channel_name: Little Pixels Family
+
+characters:
+  daddy:
+    name: Daddy
+    voice: warm, deep, playful adult male voice
+    look: >
+      Big, broad-shouldered dad in his early 30s, square jaw, light stubble,
+      thick swept-back chestnut-brown hair, bold expressive eyebrows, green eyes,
+      wearing a plain charcoal-grey crew-neck t-shirt.
+
+  lily:
+    name: Lily
+    voice: tiny, giggly, high-pitched toddler girl voice, slightly mispronounced words
+    look: >
+      Chubby 2-year-old girl with a big puffy mop of curly copper-red hair tied
+      with a pink satin bow on top, rosy cheeks, small button nose, two little
+      front teeth, wearing a pink ruffled sleeveless romper.
+
+  mommy:
+    name: Mommy
+    voice: gentle, sweet adult female voice with a teasing tone
+    look: >
+      Young mom in her late 20s with long wavy dark-brown hair, warm brown eyes,
+      soft smile, wearing a cream knit sweater.

@@ -1,0 +1,40 @@
+# Everything you might want to tweak lives here. Defaults are tuned for
+# short, vertical (9:16) Pixar-style family clips like Reels / Shorts / TikTok.
+
+# Look & feel applied to every image.
+style: >
+  3D animated Pixar/Disney-style feature-film still, soft cinematic lighting,
+  warm golden bokeh background, shallow depth of field, highly detailed skin
+  and hair, expressive faces, vertical 9:16 composition, no text, no watermark.
+
+scenes_per_video: 3        # each scene becomes one ~8s clip
+language: English          # language of the spoken dialogue
+
+# --- Claude (writes the story / scene plan) ---
+claude_model: claude-opus-5-5
+claude_effort: medium
+
+# --- fal.ai models (one FAL_KEY covers all of them) ---
+# Change these if fal releases newer/cheaper models; extra args are passed as-is.
+character_model: fal-ai/nano-banana          # text -> reference portrait
+character_args: {}
+
+image_model: fal-ai/nano-banana/edit         # reference portraits + prompt -> scene keyframe
+image_args:
+  aspect_ratio: "9:16"
+
+video_model: fal-ai/veo3/fast/image-to-video # keyframe -> animated clip WITH voices
+video_args:
+  duration: "8s"
+  generate_audio: true
+  resolution: "720p"
+
+# Rough per-item cost in USD, only used for the estimate shown before spending.
+# Check https://fal.ai/pricing for current numbers.
+cost_per_image: 0.04
+cost_per_clip: 1.20
+
+# --- Final video ---
+output_width: 1080
+output_height: 1920
+music_volume: 0.12         # if assets/music has any .mp3, one is mixed in quietly
