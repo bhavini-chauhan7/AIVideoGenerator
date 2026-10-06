@@ -4,278 +4,506 @@
 
 - idea: baby catches daddy eating her cookies
   title: Daddy's Cookie Crime
-  hook_caption: "\"I tell Mommy on you!\" 😂🍪❤️"
+  hook_caption: '"I tell Mommy on you!" 😂🍪❤️'
   description: She caught me red-handed... and negotiated like a pro. Daddy's cookie crime is safe, for now.
-  hashtags: [pixar, dadlife, toddlersbelike, cutebaby, fatherdaughter, funnybaby]
+  hashtags:
+  - pixar
+  - dadlife
+  - toddlersbelike
+  - cutebaby
+  - fatherdaughter
+  - funnybaby
   scenes:
-    - characters: [daddy, lily]
-      image_prompt: Cozy kitchen at night under a warm lamp. The dad is frozen mid-bite with a cookie in his mouth and his hand inside a pink cookie jar, eyes wide and guilty. Beside him the little girl stands holding a teddy bear, pointing up at him with a shocked open mouth. Medium shot.
-      action: slow push in on the dad's guilty face
-      dialogue:
-        - {speaker: lily, line: "Daddyyy! Dat MY cookie!"}
-    - characters: [daddy, lily]
-      image_prompt: Cozy kitchen at night. The dad crouches down to the little girl's height with cookie crumbs on his chin, holding a finger to his lips with an awkward smile. The little girl has her arms crossed and her chin up, squinting at him suspiciously. Close two-shot.
-      action: gentle drift between their faces
-      dialogue:
-        - {speaker: daddy, line: "Shhh... our little secret?"}
-        - {speaker: lily, line: "Hmph! I tell Mommy on you!"}
-    - characters: [daddy, lily]
-      image_prompt: Cozy kitchen at night with golden bokeh. The little girl happily hugs the dad's neck while holding a half-eaten cookie, giggling with eyes squeezed shut. The dad melts with a huge happy smile. Close-up, heartwarming.
-      action: slow zoom out
-      dialogue:
-        - {speaker: lily, line: "Otay... secret, Daddy. Hee hee!"}
-        - {speaker: daddy, line: "Best partner in crime ever."}
-
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Cozy kitchen at night under a warm lamp. The dad is frozen mid-bite with a cookie in his mouth and his hand inside a pink cookie jar, eyes wide and guilty. Beside him the little girl stands holding a teddy bear, pointing up at him with a shocked open mouth. Medium shot.
+    action: The dad chews the cookie slowly with wide guilty eyes while the little girl gasps, stomps her tiny foot and points at him.
+    dialogue:
+    - speaker: lily
+      line: Daddyyy! Dat MY cookie!
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Cozy kitchen at night. The dad crouches down to the little girl's height with cookie crumbs on his chin, holding a finger to his lips with an awkward smile. The little girl has her arms crossed and her chin up, squinting at him suspiciously. Close two-shot.
+    action: The dad puts a finger to his lips and whispers; the little girl turns her head away with arms crossed in a dramatic huff.
+    dialogue:
+    - speaker: daddy
+      line: Shhh... our little secret?
+    - speaker: lily
+      line: Hmph! I tell Mommy on you!
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Cozy kitchen at night with golden bokeh. The little girl happily hugs the dad's neck while holding a half-eaten cookie, giggling with eyes squeezed shut. The dad melts with a huge happy smile. Close-up, heartwarming.
+    action: The little girl munches the cookie, giggles and throws her arms around the dad's neck; the dad hugs her and sways happily.
+    dialogue:
+    - speaker: lily
+      line: Otay... secret, Daddy. Hee hee!
+    - speaker: daddy
+      line: Best partner in crime ever.
 - idea: Lily puts makeup on daddy while he naps
   title: Daddy's Makeover
-  hook_caption: "\"You so pwetty, Daddy!\" 💄😂"
+  hook_caption: '"You so pwetty, Daddy!" 💄😂'
   description: Fell asleep for ten minutes. Woke up fabulous.
-  hashtags: [pixar, dadlife, makeover, toddlersbelike, cutebaby, funny]
+  hashtags:
+  - pixar
+  - dadlife
+  - makeover
+  - toddlersbelike
+  - cutebaby
+  - funny
   scenes:
-    - characters: [daddy, lily]
-      image_prompt: Living room sofa in soft afternoon light. The dad is fast asleep on the couch with his mouth open. The little girl kneels on the cushion next to his face holding a bright pink lipstick, tongue poking out in concentration. Medium close shot.
-      action: slow push in as she leans closer
-      dialogue:
-        - {speaker: lily, line: "Shhh... Daddy need pwetty."}
-    - characters: [daddy, lily]
-      image_prompt: Living room sofa. The dad has just woken up, eyes wide in shock, his face covered in messy pink lipstick, blue eyeshadow and two pink hair clips in his hair. The little girl stands proudly beside him holding a hand mirror up to his face, beaming. Close two-shot.
-      action: quick drift to the dad's shocked face
-      dialogue:
-        - {speaker: daddy, line: "Lily... what did you DO?"}
-        - {speaker: lily, line: "You so pwetty, Daddy!"}
-    - characters: [daddy, lily]
-      image_prompt: Living room sofa in warm light. The dad, still wearing the messy pink makeup and hair clips, poses with a dramatic duck face and a peace sign, while the little girl giggles hysterically next to him doing the same pose. Fun, heartwarming close-up.
-      action: slow zoom out
-      dialogue:
-        - {speaker: daddy, line: "Okay... I AM pretty."}
-        - {speaker: lily, line: "Hee hee! Mommy gonna see!"}
-
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Living room sofa in soft afternoon light. The dad is fast asleep on the couch with his mouth open. The little girl kneels on the cushion next to his face holding a bright pink lipstick, tongue poking out in concentration. Medium close shot.
+    action: The dad snores with his chest rising and falling; the little girl carefully dabs lipstick on his lips, tongue poking out in concentration.
+    dialogue:
+    - speaker: lily
+      line: Shhh... Daddy need pwetty.
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Living room sofa. The dad has just woken up, eyes wide in shock, his face covered in messy pink lipstick, blue eyeshadow and two pink hair clips in his hair. The little girl stands proudly beside him holding a hand mirror up to his face, beaming. Close two-shot.
+    action: The dad jolts awake and stares into the mirror in shock; the little girl claps and bounces happily.
+    dialogue:
+    - speaker: daddy
+      line: Lily... what did you DO?
+    - speaker: lily
+      line: You so pwetty, Daddy!
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Living room sofa in warm light. The dad, still wearing the messy pink makeup and hair clips, poses with a dramatic duck face and a peace sign, while the little girl giggles hysterically next to him doing the same pose. Fun, heartwarming close-up.
+    action: The dad strikes funny model poses; the little girl giggles and copies every pose.
+    dialogue:
+    - speaker: daddy
+      line: Okay... I AM pretty.
+    - speaker: lily
+      line: Hee hee! Mommy gonna see!
 - idea: daddy pretends Lily's tiny roar is the scariest thing ever
   title: The Scariest Roar
-  hook_caption: "\"ROAAAR!\" 🦖 Daddy didn't survive 😂"
+  hook_caption: '"ROAAAR!" 🦖 Daddy didn''t survive 😂'
   description: The most terrifying dinosaur in the world is 2 years old and wears a pink bow.
-  hashtags: [pixar, dadlife, dinosaur, toddlersbelike, cutebaby, fatherdaughter]
+  hashtags:
+  - pixar
+  - dadlife
+  - dinosaur
+  - toddlersbelike
+  - cutebaby
+  - fatherdaughter
   scenes:
-    - characters: [daddy, lily]
-      image_prompt: Bright playroom full of toys. The little girl wears a green dinosaur hoodie with soft spikes over her outfit, standing in a fierce pose with tiny hands up like claws and a big open-mouth roar face. The dad sits on the floor in front of her. Low-angle shot that makes her look big.
-      action: dramatic slow push in on the little girl
-      dialogue:
-        - {speaker: lily, line: "ROAAAR! I a scawy dinosaur!"}
-    - characters: [daddy, lily]
-      image_prompt: Bright playroom. The dad dramatically falls backwards onto a pile of cushions with his hands on his cheeks, mouth wide open in exaggerated fake terror. The little girl in the green dinosaur hoodie stands over him, delighted. Wide shot.
-      action: quick pan following the dad's fall
-      dialogue:
-        - {speaker: daddy, line: "AAAH! Please, Mrs. Dinosaur, don't eat me!"}
-    - characters: [daddy, lily]
-      image_prompt: Bright playroom. The little girl in the green dinosaur hoodie lies on top of the dad's chest giving him a big hug and a kiss on the cheek. The dad smiles with eyes closed, totally happy. Warm close-up.
-      action: slow zoom out
-      dialogue:
-        - {speaker: lily, line: "Otay. I eat you... wif kisses!"}
-        - {speaker: daddy, line: "Best way to go."}
-
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Bright playroom full of toys. The little girl wears a green dinosaur hoodie with soft spikes over her outfit, standing in a fierce pose with tiny hands up like claws and a big open-mouth roar face. The dad sits on the floor in front of her. Low-angle shot that makes her look big.
+    action: The little girl stomps forward with tiny claws up and roars; the dad leans back in surprise.
+    dialogue:
+    - speaker: lily
+      line: ROAAAR! I a scawy dinosaur!
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Bright playroom. The dad dramatically falls backwards onto a pile of cushions with his hands on his cheeks, mouth wide open in exaggerated fake terror. The little girl in the green dinosaur hoodie stands over him, delighted. Wide shot.
+    action: The dad throws himself backwards onto the cushions, waving his arms in fake terror; the little girl jumps up and down with delight.
+    dialogue:
+    - speaker: daddy
+      line: AAAH! Please, Mrs. Dinosaur, don't eat me!
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Bright playroom. The little girl in the green dinosaur hoodie lies on top of the dad's chest giving him a big hug and a kiss on the cheek. The dad smiles with eyes closed, totally happy. Warm close-up.
+    action: The little girl crawls onto the dad's chest and smothers his cheek with kisses; he laughs.
+    dialogue:
+    - speaker: lily
+      line: Otay. I eat you... wif kisses!
+    - speaker: daddy
+      line: Best way to go.
 - idea: mommy asks who made the mess and Lily points at daddy
   title: Who Made The Mess?
-  hook_caption: "She threw me under the bus 😂🍝"
-  description: "Toddler logic: if Daddy's in the room, Daddy did it."
-  hashtags: [pixar, momlife, dadlife, toddlersbelike, cutebaby, familyfun]
+  hook_caption: She threw me under the bus 😂🍝
+  description: 'Toddler logic: if Daddy''s in the room, Daddy did it.'
+  hashtags:
+  - pixar
+  - momlife
+  - dadlife
+  - toddlersbelike
+  - cutebaby
+  - familyfun
   scenes:
-    - characters: [mommy, daddy, lily]
-      image_prompt: Messy kitchen with spaghetti and sauce splattered on the walls and floor. The mom stands in the doorway with hands on hips and raised eyebrows. The little girl sits on the floor covered in tomato sauce holding a noodle, and the dad stands at the sink. Wide shot.
-      action: slow push in on the mom
-      dialogue:
-        - {speaker: mommy, line: "Okay... who made this mess?"}
-    - characters: [daddy, lily]
-      image_prompt: Messy kitchen. The little girl, face covered in tomato sauce, points dramatically at the dad with a serious face. The dad, completely clean, points at himself in disbelief with his mouth open. Close two-shot.
-      action: quick drift from the little girl to the dad
-      dialogue:
-        - {speaker: lily, line: "Daddy did it."}
-        - {speaker: daddy, line: "ME?! I was washing dishes!"}
-    - characters: [mommy, daddy, lily]
-      image_prompt: Messy kitchen in warm light. The mom laughs while wiping sauce off the little girl's cheek. The dad shakes his head smiling. The little girl grins showing her two front teeth, a noodle on her head. Warm family close-up.
-      action: slow zoom out
-      dialogue:
-        - {speaker: mommy, line: "Nice try, sweetie."}
-        - {speaker: lily, line: "Hee hee! Noodle hat!"}
-
+  - characters:
+    - mommy
+    - daddy
+    - lily
+    image_prompt: Messy kitchen with spaghetti and sauce splattered on the walls and floor. The mom stands in the doorway with hands on hips and raised eyebrows. The little girl sits on the floor covered in tomato sauce holding a noodle, and the dad stands at the sink. Wide shot.
+    action: The mom taps her foot with hands on hips; the little girl slurps a long noodle; the dad freezes at the sink.
+    dialogue:
+    - speaker: mommy
+      line: Okay... who made this mess?
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Messy kitchen. The little girl, face covered in tomato sauce, points dramatically at the dad with a serious face. The dad, completely clean, points at himself in disbelief with his mouth open. Close two-shot.
+    action: The little girl points firmly at the dad; the dad points at himself, mouth open, shaking his head.
+    dialogue:
+    - speaker: lily
+      line: Daddy did it.
+    - speaker: daddy
+      line: ME?! I was washing dishes!
+  - characters:
+    - mommy
+    - daddy
+    - lily
+    image_prompt: Messy kitchen in warm light. The mom laughs while wiping sauce off the little girl's cheek. The dad shakes his head smiling. The little girl grins showing her two front teeth, a noodle on her head. Warm family close-up.
+    action: The mom laughs and wipes the little girl's cheek; the little girl wiggles and giggles.
+    dialogue:
+    - speaker: mommy
+      line: Nice try, sweetie.
+    - speaker: lily
+      line: Hee hee! Noodle hat!
 - idea: Lily tries to say 'I love you' but mispronounces it
-  title: "I Wuv Woo"
-  hook_caption: "\"I wuv woo, Daddy\" 🥹❤️"
+  title: I Wuv Woo
+  hook_caption: '"I wuv woo, Daddy" 🥹❤️'
   description: Three little words. Pronounced completely wrong. Perfect anyway.
-  hashtags: [pixar, dadlife, iloveyou, cutebaby, fatherdaughter, wholesome]
+  hashtags:
+  - pixar
+  - dadlife
+  - iloveyou
+  - cutebaby
+  - fatherdaughter
+  - wholesome
   scenes:
-    - characters: [daddy, lily]
-      image_prompt: Cozy bedroom at bedtime with a glowing star night light. The dad sits on the edge of a small bed tucking the little girl in under a pink blanket. She looks up at him with sleepy, adoring eyes. Medium shot, soft blue and gold light.
-      action: slow push in
-      dialogue:
-        - {speaker: daddy, line: "Goodnight, princess. I love you."}
-    - characters: [daddy, lily]
-      image_prompt: Cozy bedroom at night. The little girl sits up in bed reaching both tiny arms toward the dad's face, squishing his cheeks, looking at him very seriously. The dad leans in, surprised and curious. Close two-shot.
-      action: gentle drift toward the little girl
-      dialogue:
-        - {speaker: lily, line: "Daddy... I wuv woo. Dis much!"}
-    - characters: [daddy, lily]
-      image_prompt: Cozy bedroom at night. The dad holds the sleepy little girl in a tight hug, one happy tear on his cheek, eyes closed and smiling. Warm glowing night light, heartwarming close-up.
-      action: very slow zoom out
-      dialogue:
-        - {speaker: daddy, line: "Okay... who's cutting onions in here?"}
-
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Cozy bedroom at bedtime with a glowing star night light. The dad sits on the edge of a small bed tucking the little girl in under a pink blanket. She looks up at him with sleepy, adoring eyes. Medium shot, soft blue and gold light.
+    action: The dad tucks the blanket around the little girl and gently strokes her hair; she blinks sleepily.
+    dialogue:
+    - speaker: daddy
+      line: Goodnight, princess. I love you.
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Cozy bedroom at night. The little girl sits up in bed reaching both tiny arms toward the dad's face, squishing his cheeks, looking at him very seriously. The dad leans in, surprised and curious. Close two-shot.
+    action: The little girl sits up, squishes the dad's cheeks with both hands, then spreads her arms wide.
+    dialogue:
+    - speaker: lily
+      line: Daddy... I wuv woo. Dis much!
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Cozy bedroom at night. The dad holds the sleepy little girl in a tight hug, one happy tear on his cheek, eyes closed and smiling. Warm glowing night light, heartwarming close-up.
+    action: The dad hugs her tightly and rocks gently side to side, a tear rolling down his cheek.
+    dialogue:
+    - speaker: daddy
+      line: Okay... who's cutting onions in here?
 - idea: daddy tries to braid Lily's hair for the first time
   title: Daddy's First Braid
-  hook_caption: "Watched one YouTube video. How hard can it be? 😅💇‍♀️"
+  hook_caption: Watched one YouTube video. How hard can it be? 😅💇‍♀️
   description: The hairstyle is called "Daddy tried his best."
-  hashtags: [pixar, dadlife, hairstyle, toddlersbelike, cutebaby, fatherdaughter]
+  hashtags:
+  - pixar
+  - dadlife
+  - hairstyle
+  - toddlersbelike
+  - cutebaby
+  - fatherdaughter
   scenes:
-    - characters: [daddy, lily]
-      image_prompt: Bright bathroom in the morning. The little girl sits on a stool in front of a mirror while the dad stands behind her holding a comb, a brush and a phone with a hair tutorial, a determined look on his face. Medium shot.
-      action: slow push in on the dad's determined face
-      dialogue:
-        - {speaker: daddy, line: "Okay. Three strands. I can do this."}
-    - characters: [daddy, lily]
-      image_prompt: Bright bathroom. The little girl's curly red hair is a giant tangled mess sticking out in all directions with a comb stuck in it. She stares at her reflection in the mirror with a deadpan face. The dad behind her looks panicked. Close-up.
-      action: quick drift to the mirror reflection
-      dialogue:
-        - {speaker: lily, line: "Daddy... I look like a bwoccoli."}
-    - characters: [daddy, lily]
-      image_prompt: Bright bathroom. The dad has put the same pink bow in his own hair and the little girl laughs hysterically, her hair still wild. They smile together in the mirror. Warm close-up.
-      action: slow zoom out
-      dialogue:
-        - {speaker: daddy, line: "Matching broccoli twins?"}
-        - {speaker: lily, line: "Yay! Bwoccoli twins!"}
-
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Bright bathroom in the morning. The little girl sits on a stool in front of a mirror while the dad stands behind her holding a comb, a brush and a phone with a hair tutorial, a determined look on his face. Medium shot.
+    action: The dad nervously combs the little girl's hair while glancing back and forth at the phone tutorial.
+    dialogue:
+    - speaker: daddy
+      line: Okay. Three strands. I can do this.
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Bright bathroom. The little girl's curly red hair is a giant tangled mess sticking out in all directions with a comb stuck in it. She stares at her reflection in the mirror with a deadpan face. The dad behind her looks panicked. Close-up.
+    action: The little girl slowly turns her head to stare at the dad with a deadpan face; the dad panics and drops the comb.
+    dialogue:
+    - speaker: lily
+      line: Daddy... I look like a bwoccoli.
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Bright bathroom. The dad has put the same pink bow in his own hair and the little girl laughs hysterically, her hair still wild. They smile together in the mirror. Warm close-up.
+    action: The dad clips the pink bow into his own hair and they laugh, bobbing their heads together.
+    dialogue:
+    - speaker: daddy
+      line: Matching broccoli twins?
+    - speaker: lily
+      line: Yay! Bwoccoli twins!
 - idea: Lily refuses to share her ice cream with daddy
   title: Not Sharing
-  hook_caption: "\"Dis my ice cweam.\" 🍦🙅‍♀️"
+  hook_caption: '"Dis my ice cweam." 🍦🙅‍♀️'
   description: Daddy paid for it. Daddy gets none. That's the rules.
-  hashtags: [pixar, dadlife, icecream, toddlersbelike, cutebaby, funny]
+  hashtags:
+  - pixar
+  - dadlife
+  - icecream
+  - toddlersbelike
+  - cutebaby
+  - funny
   scenes:
-    - characters: [daddy, lily]
-      image_prompt: Sunny park bench in summer. The little girl sits holding a huge pink ice cream cone with both hands, ice cream on her nose. The dad sits next to her giving her big puppy-dog eyes. Medium two-shot, bright cheerful colors.
-      action: slow push in on the dad's puppy eyes
-      dialogue:
-        - {speaker: daddy, line: "Can Daddy have one tiny bite?"}
-    - characters: [daddy, lily]
-      image_prompt: Sunny park bench. The little girl turns away holding the ice cream cone protectively against her chest, giving the dad a dramatic side-eye. The dad looks heartbroken with his bottom lip out. Close two-shot.
-      action: quick drift to the little girl's side-eye
-      dialogue:
-        - {speaker: lily, line: "No. Dis MY ice cweam."}
-    - characters: [daddy, lily]
-      image_prompt: Sunny park bench. The little girl holds out the cone to the dad with a sweet smile, but it is just the empty soggy cone with no ice cream left. The dad laughs. Warm close-up.
-      action: slow zoom out
-      dialogue:
-        - {speaker: lily, line: "Otay Daddy. You can have dis."}
-        - {speaker: daddy, line: "Wow. So generous."}
-
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Sunny park bench in summer. The little girl sits holding a huge pink ice cream cone with both hands, ice cream on her nose. The dad sits next to her giving her big puppy-dog eyes. Medium two-shot, bright cheerful colors.
+    action: The little girl licks her ice cream happily while the dad leans in closer with big pleading eyes.
+    dialogue:
+    - speaker: daddy
+      line: Can Daddy have one tiny bite?
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Sunny park bench. The little girl turns away holding the ice cream cone protectively against her chest, giving the dad a dramatic side-eye. The dad looks heartbroken with his bottom lip out. Close two-shot.
+    action: The little girl twists away hugging the cone and gives him a side-eye; the dad pouts.
+    dialogue:
+    - speaker: lily
+      line: No. Dis MY ice cweam.
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Sunny park bench. The little girl holds out the cone to the dad with a sweet smile, but it is just the empty soggy cone with no ice cream left. The dad laughs. Warm close-up.
+    action: The little girl hands the dad the empty soggy cone; the dad laughs and takes it.
+    dialogue:
+    - speaker: lily
+      line: Otay Daddy. You can have dis.
+    - speaker: daddy
+      line: Wow. So generous.
 - idea: daddy pretends to cry so Lily will give him a hug
   title: Fake Tears
-  hook_caption: "She saw right through me 😂😭"
+  hook_caption: She saw right through me 😂😭
   description: Oscar-worthy performance. Zero stars from the critic.
-  hashtags: [pixar, dadlife, toddlersbelike, cutebaby, fatherdaughter, funny]
+  hashtags:
+  - pixar
+  - dadlife
+  - toddlersbelike
+  - cutebaby
+  - fatherdaughter
+  - funny
   scenes:
-    - characters: [daddy, lily]
-      image_prompt: Living room carpet with toys. The dad sits on the floor with his face in his hands pretending to cry dramatically, peeking through his fingers. The little girl stands nearby holding a toy, looking at him. Medium shot.
-      action: slow push in on the dad
-      dialogue:
-        - {speaker: daddy, line: "Boo hoo... nobody hugs Daddy..."}
-    - characters: [daddy, lily]
-      image_prompt: Living room. The little girl stands in front of the dad with her hands on her hips, one eyebrow raised, unimpressed. The dad freezes mid fake-cry, caught. Close two-shot.
-      action: quick drift to the little girl's raised eyebrow
-      dialogue:
-        - {speaker: lily, line: "Daddy. You fake cwying."}
-    - characters: [daddy, lily]
-      image_prompt: Living room in warm light. The little girl gives the dad a huge hug around his neck anyway, eyes closed and smiling, while the dad grins with joy. Heartwarming close-up.
-      action: slow zoom out
-      dialogue:
-        - {speaker: lily, line: "But I hug you anyway."}
-        - {speaker: daddy, line: "Worked!"}
-
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Living room carpet with toys. The dad sits on the floor with his face in his hands pretending to cry dramatically, peeking through his fingers. The little girl stands nearby holding a toy, looking at him. Medium shot.
+    action: The dad fake-sobs with shaking shoulders, peeking through his fingers.
+    dialogue:
+    - speaker: daddy
+      line: Boo hoo... nobody hugs Daddy...
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Living room. The little girl stands in front of the dad with her hands on her hips, one eyebrow raised, unimpressed. The dad freezes mid fake-cry, caught. Close two-shot.
+    action: The little girl walks up, puts her hands on her hips and raises one eyebrow; the dad freezes mid-sob.
+    dialogue:
+    - speaker: lily
+      line: Daddy. You fake cwying.
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Living room in warm light. The little girl gives the dad a huge hug around his neck anyway, eyes closed and smiling, while the dad grins with joy. Heartwarming close-up.
+    action: The little girl runs into the dad's arms and hugs him; the dad grins and squeezes her.
+    dialogue:
+    - speaker: lily
+      line: But I hug you anyway.
+    - speaker: daddy
+      line: Worked!
 - idea: Lily hides daddy's phone and acts innocent
   title: Where's My Phone?
-  hook_caption: "\"I not know, Daddy\" 📱😇"
+  hook_caption: '"I not know, Daddy" 📱😇'
   description: The phone was in the toy oven. Obviously.
-  hashtags: [pixar, dadlife, toddlersbelike, cutebaby, innocent, funny]
+  hashtags:
+  - pixar
+  - dadlife
+  - toddlersbelike
+  - cutebaby
+  - innocent
+  - funny
   scenes:
-    - characters: [daddy, lily]
-      image_prompt: Living room. The dad searches under the sofa cushions with a confused frustrated face. Behind him the little girl sits very straight on a chair with her hands folded and a super innocent angelic smile. Medium wide shot.
-      action: slow pan from the dad to the little girl
-      dialogue:
-        - {speaker: daddy, line: "Lily, have you seen Daddy's phone?"}
-        - {speaker: lily, line: "Nope. I not know."}
-    - characters: [daddy, lily]
-      image_prompt: Living room. Close-up of the little girl with a too-innocent smile, eyes looking sideways toward a pink toy kitchen oven, from which a phone is glowing and ringing. The dad leans in suspiciously. Close two-shot.
-      action: quick drift toward the glowing toy oven
-      dialogue:
-        - {speaker: daddy, line: "Then why is your oven ringing?"}
-    - characters: [daddy, lily]
-      image_prompt: Living room. The dad holds his phone, which is covered in stickers and wrapped in a tiny blanket. The little girl giggles. The dad laughs and lifts her up. Warm close-up.
-      action: slow zoom out
-      dialogue:
-        - {speaker: lily, line: "Phone was cold. I make it cozy!"}
-
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Living room. The dad searches under the sofa cushions with a confused frustrated face. Behind him the little girl sits very straight on a chair with her hands folded and a super innocent angelic smile. Medium wide shot.
+    action: The dad digs under the sofa cushions; behind him the little girl swings her legs and smiles innocently.
+    dialogue:
+    - speaker: daddy
+      line: Lily, have you seen Daddy's phone?
+    - speaker: lily
+      line: Nope. I not know.
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Living room. Close-up of the little girl with a too-innocent smile, eyes looking sideways toward a pink toy kitchen oven, from which a phone is glowing and ringing. The dad leans in suspiciously. Close two-shot.
+    action: The toy oven glows and buzzes; the little girl's eyes dart toward it; the dad leans closer suspiciously.
+    dialogue:
+    - speaker: daddy
+      line: Then why is your oven ringing?
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Living room. The dad holds his phone, which is covered in stickers and wrapped in a tiny blanket. The little girl giggles. The dad laughs and lifts her up. Warm close-up.
+    action: The dad unwraps the phone from a tiny blanket; the little girl giggles and he scoops her up.
+    dialogue:
+    - speaker: lily
+      line: Phone was cold. I make it cozy!
 - idea: Lily tells mommy that daddy said a bad word
   title: The Bad Word
-  hook_caption: "Toddlers: the world's best reporters 🗞️😂"
+  hook_caption: 'Toddlers: the world''s best reporters 🗞️😂'
   description: Stubbed my toe ONE time.
-  hashtags: [pixar, dadlife, momlife, toddlersbelike, cutebaby, funny]
+  hashtags:
+  - pixar
+  - dadlife
+  - momlife
+  - toddlersbelike
+  - cutebaby
+  - funny
   scenes:
-    - characters: [daddy, lily]
-      image_prompt: Hallway at home. The dad hops on one foot holding his other foot in pain after stepping on a toy block, face scrunched. The little girl watches with huge eyes and a hand over her mouth. Medium shot.
-      action: quick push in on the dad's pained face
-      dialogue:
-        - {speaker: daddy, line: "OW! Fudge-nuggets!"}
-    - characters: [mommy, lily]
-      image_prompt: Kitchen. The little girl tugs on the mom's sweater, pointing back toward the hallway with a very serious tattletale face. The mom bends down to listen. Close two-shot.
-      action: gentle drift toward the little girl
-      dialogue:
-        - {speaker: lily, line: "Mommy! Daddy said a bad word!"}
-        - {speaker: mommy, line: "Oh no! What did he say?"}
-    - characters: [mommy, daddy, lily]
-      image_prompt: Kitchen. The little girl whispers into the mom's ear while the dad peeks around the doorway looking nervous. The mom tries hard not to laugh. Funny warm family shot.
-      action: slow zoom out
-      dialogue:
-        - {speaker: lily, line: "He said... NUGGETS."}
-
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Hallway at home. The dad hops on one foot holding his other foot in pain after stepping on a toy block, face scrunched. The little girl watches with huge eyes and a hand over her mouth. Medium shot.
+    action: The dad hops around on one foot clutching his toe; the little girl gasps and covers her mouth.
+    dialogue:
+    - speaker: daddy
+      line: OW! Fudge-nuggets!
+  - characters:
+    - mommy
+    - lily
+    image_prompt: Kitchen. The little girl tugs on the mom's sweater, pointing back toward the hallway with a very serious tattletale face. The mom bends down to listen. Close two-shot.
+    action: The little girl runs to the mom and tugs her sweater, pointing back; the mom bends down to listen.
+    dialogue:
+    - speaker: lily
+      line: Mommy! Daddy said a bad word!
+    - speaker: mommy
+      line: Oh no! What did he say?
+  - characters:
+    - mommy
+    - daddy
+    - lily
+    image_prompt: Kitchen. The little girl whispers into the mom's ear while the dad peeks around the doorway looking nervous. The mom tries hard not to laugh. Funny warm family shot.
+    action: The little girl whispers in the mom's ear; the mom bites her lip to hold back laughter while the dad peeks in nervously.
+    dialogue:
+    - speaker: lily
+      line: He said... NUGGETS.
 - idea: Lily wakes daddy up at 5am to play
   title: 5 AM Alarm
-  hook_caption: "My alarm clock has a pink bow ⏰🎀"
+  hook_caption: My alarm clock has a pink bow ⏰🎀
   description: Who needs sleep when you have a toddler?
-  hashtags: [pixar, dadlife, tireddad, toddlersbelike, cutebaby, morning]
+  hashtags:
+  - pixar
+  - dadlife
+  - tireddad
+  - toddlersbelike
+  - cutebaby
+  - morning
   scenes:
-    - characters: [daddy, lily]
-      image_prompt: Dark bedroom at dawn, blue light through the curtains. The dad sleeps face down in bed. The little girl stands right next to the bed, her face very close to his, wide awake with huge eyes, holding a toy. Close shot.
-      action: slow push in on the little girl's wide eyes
-      dialogue:
-        - {speaker: lily, line: "Daddy. Daddy. DADDY. You awake?"}
-    - characters: [daddy, lily]
-      image_prompt: Dark bedroom at dawn. The dad opens one eye, completely exhausted, hair messy, pillow marks on his face. The little girl bounces happily on the bed holding three toys. Close two-shot.
-      action: drift to the dad's tired face
-      dialogue:
-        - {speaker: daddy, line: "Sweetie... the sun isn't even awake."}
-        - {speaker: lily, line: "Sun lazy. We play!"}
-    - characters: [daddy, lily]
-      image_prompt: Bedroom with soft morning light. Both the dad and the little girl are fast asleep together under the blanket, she is snuggled on his chest still holding a toy. Peaceful heartwarming close-up.
-      action: very slow zoom out
-      dialogue:
-        - {speaker: daddy, line: "Five more minutes... both of us."}
-
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Dark bedroom at dawn, blue light through the curtains. The dad sleeps face down in bed. The little girl stands right next to the bed, her face very close to his, wide awake with huge eyes, holding a toy. Close shot.
+    action: The little girl pokes the sleeping dad's cheek again and again, bouncing on her toes.
+    dialogue:
+    - speaker: lily
+      line: Daddy. Daddy. DADDY. You awake?
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Dark bedroom at dawn. The dad opens one eye, completely exhausted, hair messy, pillow marks on his face. The little girl bounces happily on the bed holding three toys. Close two-shot.
+    action: The dad lifts his head groggily; the little girl jumps on the bed waving her toys.
+    dialogue:
+    - speaker: daddy
+      line: Sweetie... the sun isn't even awake.
+    - speaker: lily
+      line: Sun lazy. We play!
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Bedroom with soft morning light. Both the dad and the little girl are fast asleep together under the blanket, she is snuggled on his chest still holding a toy. Peaceful heartwarming close-up.
+    action: Both breathe slowly while sleeping; the little girl snuggles closer and smiles in her sleep.
+    dialogue:
+    - speaker: daddy
+      line: Five more minutes... both of us.
 - idea: Lily teaches daddy how to dance
   title: Dance Teacher
-  hook_caption: "Strict teacher. Zero patience. 💃😂"
+  hook_caption: Strict teacher. Zero patience. 💃😂
   description: I got a C minus in toddler dance class.
-  hashtags: [pixar, dadlife, dance, toddlersbelike, cutebaby, fatherdaughter]
+  hashtags:
+  - pixar
+  - dadlife
+  - dance
+  - toddlersbelike
+  - cutebaby
+  - fatherdaughter
   scenes:
-    - characters: [daddy, lily]
-      image_prompt: Living room with colorful lights. The little girl wears a pink tutu over her outfit and stands like a strict teacher pointing at the dad, who stands awkwardly in front of her. Medium wide shot, fun lighting.
-      action: slow push in on the little girl
-      dialogue:
-        - {speaker: lily, line: "Otay Daddy. Spin like me!"}
-    - characters: [daddy, lily]
-      image_prompt: Living room with colorful lights. The big dad attempts a ballet spin on one leg, wobbling and about to fall, arms flailing. The little girl in the tutu covers her eyes with her hands. Wide shot.
-      action: quick pan with the dad's wobbly spin
-      dialogue:
-        - {speaker: lily, line: "No no no! Dat not it!"}
-    - characters: [daddy, lily]
-      image_prompt: Living room with colorful lights. The dad holds the little girl in the tutu up in the air in a happy dance lift, both laughing with joy. Warm close-up.
-      action: slow zoom out
-      dialogue:
-        - {speaker: daddy, line: "How about this move?"}
-        - {speaker: lily, line: "Yay! Daddy pass!"}
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Living room with colorful lights. The little girl wears a pink tutu over her outfit and stands like a strict teacher pointing at the dad, who stands awkwardly in front of her. Medium wide shot, fun lighting.
+    action: The little girl twirls in her tutu, then points at the dad to copy her.
+    dialogue:
+    - speaker: lily
+      line: Otay Daddy. Spin like me!
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Living room with colorful lights. The big dad attempts a ballet spin on one leg, wobbling and about to fall, arms flailing. The little girl in the tutu covers her eyes with her hands. Wide shot.
+    action: The dad tries to spin on one leg, wobbles and almost falls; the little girl covers her eyes.
+    dialogue:
+    - speaker: lily
+      line: No no no! Dat not it!
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Living room with colorful lights. The dad holds the little girl in the tutu up in the air in a happy dance lift, both laughing with joy. Warm close-up.
+    action: The dad lifts the little girl up and spins her around; both laugh.
+    dialogue:
+    - speaker: daddy
+      line: How about this move?
+    - speaker: lily
+      line: Yay! Daddy pass!
+- idea: Lily runs away at bath time and daddy chases her
+  title: Bath Time Escape
+  hook_caption: '"No baf! NO BAF!" 🛁🏃‍♀️😂'
+  description: Every night. Same chase. She always wins.
+  hashtags:
+  - pixar
+  - dadlife
+  - bathtime
+  - toddlersbelike
+  - cutebaby
+  - funny
+  scenes:
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Long cozy hallway at home in the evening. The little girl, wrapped in a pink hooded bath towel like a superhero cape, runs toward the camera laughing with her arms out. Behind her the dad chases her holding a yellow rubber duck, playful determined face. Dynamic wide shot.
+    action: The little girl runs toward the camera giggling, her towel cape flapping; the dad runs after her waving the rubber duck.
+    dialogue:
+    - speaker: lily
+      line: No baf! NO BAF!
+    - speaker: daddy
+      line: Come back here, little rocket!
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Living room in the evening. The dad slips on a toy car and slides across the wooden floor on his back, arms flailing, rubber duck flying in the air. In the background the little girl hides behind a curtain with only her tiny feet and pink towel showing. Wide shot.
+    action: The dad slips on a toy car and slides across the floor with arms flailing; behind the curtain the little girl's feet wiggle as she giggles.
+    dialogue:
+    - speaker: daddy
+      line: Whoa! Whoa! WHOAAA!
+    - speaker: lily
+      line: Hee hee! Daddy faww down!
+  - characters:
+    - daddy
+    - lily
+    image_prompt: Bright bathroom full of bubbles. The little girl sits happily in a bubble bath wearing a big bubble beard, and the dad kneels beside the tub also wearing a bubble beard, both laughing. Warm cozy close-up.
+    action: The little girl splashes the water and blows bubbles at the dad; the dad laughs and pats his own bubble beard.
+    dialogue:
+    - speaker: lily
+      line: Daddy... baf is fun.
+    - speaker: daddy
+      line: Every. Single. Night.

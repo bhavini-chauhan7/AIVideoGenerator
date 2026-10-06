@@ -328,7 +328,10 @@ def join(clips, dest, music_volume):
     listfile = dest.with_name("clips.txt")
     listfile.write_text("".join(f"file '{c.name}'\n" for c in clips))
     joined = dest.with_name("joined.mp4")
-    ffmpeg("-f", "concat", "-safe", "0", "-i", listfile, "-c", "copy", "-movflags", "+faststart", joined)
+    # loudnorm: make voices as loud as typical Reels/Shorts audio
+    ffmpeg("-f", "concat", "-safe", "0", "-i", listfile, "-c:v", "copy",
+           "-af", "loudnorm=I=-14:TP=-1.5:LRA=11", "-ar", "44100", "-c:a", "aac", "-b:a", "192k",
+           "-movflags", "+faststart", joined)
     listfile.unlink()
     music = sorted(MUSIC_DIR.glob("*.mp3"))
     if music:
